@@ -14,5 +14,5 @@ class Vendor(BaseModel):
 class Receipt(BaseModel):
     vendor: Vendor = Field(description='Vendor of the receipt.')
     date: datetime = Field(description='Date of the receipt.')
-    amount: Decimal = Field(description='Total amount of the receipt.')
+    amount: Decimal = Field(description='Total amount of the receipt.', gt=Decimal('0.00'))
     tax: Decimal = Field(description='Tax for the receipt', default='0.00')
