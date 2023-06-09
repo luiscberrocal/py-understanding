@@ -22,6 +22,9 @@ class Receipt(BaseModel):
     tax: Decimal = Field(description='Tax for the receipt', default='0.00')
     source_file: Optional[Path] = Field(description='Receipt file')
 
+    class Config:
+        arbitrary_types_allowed = True
+
     @validator('source_file')
     def source_file_exists(cls, value):
         if value:
@@ -29,6 +32,7 @@ class Receipt(BaseModel):
                 message = 'source_file does not exist'
                 raise ValueError(message)
         return value
+
 
 
 class GetInput(BaseModel):
