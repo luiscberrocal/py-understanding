@@ -24,7 +24,20 @@ class Receipt(BaseModel):
 
     @validator('source_file')
     def source_file_exists(cls, value):
-        if not value.exists():
-            message = 'source_file does not exist'
-            raise ValueError(message)
+        if value:
+            if not value.exists():
+                message = 'source_file does not exist'
+                raise ValueError(message)
         return value
+
+
+class GetInput(BaseModel):
+    rank: Optional[int] = None
+    interval: Optional[int] = None
+
+    @validator("rank")
+    def check_range(cls, v):
+        if v:
+            if not 0 < v < 1000001:
+                raise ValueError("Value Must be within range (0,1000000)")
+            return v
