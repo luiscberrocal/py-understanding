@@ -1,5 +1,6 @@
-from _decimal import Decimal
+from decimal import Decimal
 from datetime import datetime
+import pytest
 
 from python_libs.pydantic.models import Vendor, Receipt
 
@@ -23,3 +24,16 @@ def test_create_receipt_date():
     for dt in date_strs:
         receipt = Receipt(vendor=vendor, date=dt, amount='125.00')
         assert isinstance(receipt.date, datetime)
+
+
+def test_validators_path_exists():
+    """Tests condiftions for source_file if it is not None
+    - It is a file
+    - File exists."""
+
+    inexistent_file = '/blar/bal'
+
+    with pytest.raises(ValueError) as ctx:
+        Vendor(name='Wayne Enterprises', national_id='4555-55-5555', verification_digit='44',
+               source_file=inexistent_file)
+    assert str(ctx.value) == ''
