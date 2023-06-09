@@ -20,5 +20,5 @@ class Receipt(BaseModel):
     date: datetime = Field(description='Date of the receipt.')
     amount: Decimal = Field(description='Total amount of the receipt.', gt=Decimal('0.00'))
     tax: Decimal = Field(description='Tax for the receipt', default='0.00')
-    source_file = Optional[Path] = Field(description='Receipt file')_Tcmwan0912
+    source_file:  Optional[Path] = Field(description='Receipt file')
 
