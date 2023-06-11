@@ -42,3 +42,7 @@ def test_validators_path_exists():
 def test_validator():
     with pytest.raises(ValueError) as ctx:
         g = GetInput(rank=-1)
+"12667777",
+"8999000",
+"iiooooo",
+"kkkkkkkkkkkkkkkkk",
