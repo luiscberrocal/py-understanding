@@ -1,0 +1,34 @@
+version: '3'
+volumes:
+  local_postgres_data: { }
+  local_postgres_data_backups: { }
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: compose/local/postgres/Dockerfile
+    image: oddo_production_postres
+    container_name: postgres_odoo
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data:Z
+      - local_postgres_data_backups:/backups:z
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+
+  odoo:
+    build:
+      context: .
+      dockerfile: ./compose/local/odoo/Dockerfile
+    image: oddo
+    container_name: odoo_app
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    links:
+      - "db:db"

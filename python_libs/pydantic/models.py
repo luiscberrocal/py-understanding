@@ -3,7 +3,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 from python_libs.pydantic.enums import VendorType
 
@@ -20,5 +20,28 @@ class Receipt(BaseModel):
     date: datetime = Field(description='Date of the receipt.')
     amount: Decimal = Field(description='Total amount of the receipt.', gt=Decimal('0.00'))
     tax: Decimal = Field(description='Tax for the receipt', default='0.00')
-    source_file = Optional[Path] = Field(description='Receipt file')_Tcmwan0912
+    source_file: Optional[Path] = Field(description='Receipt file')
 
+    class Config:
+        arbitrary_types_allowed = True
+
+    @validator('source_file')
+    def source_file_exists(cls, value):
+        if value:
+            if not value.exists():
+                message = 'source_file does not exist'
+                raise ValueError(message)
+        return value
+
+
+
+class GetInput(BaseModel):
+    rank: Optional[int] = None
+    interval: Optional[int] = None
+
+    @validator("rank")
+    def check_range(cls, v):
+        if v:
+            if not 0 < v < 1000001:
+                raise ValueError("Value Must be within range (0,1000000)")
+            return v
