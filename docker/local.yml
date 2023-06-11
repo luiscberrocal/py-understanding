@@ -7,7 +7,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
+      dockerfile: compose/local/postgres/Dockerfile
     image: oddo_production_postres
     container_name: postgres_odoo
     volumes:
