@@ -12,7 +12,7 @@ except ImportError:
 
 setup(
     name='python_libs',
-    version='0.1.0',
+    version='0.2.1',
     description="""Testt""",
     long_description="Long description",
     author='Luis Carlos Berrocal',
@@ -31,5 +31,11 @@ setup(
         'License :: OSI Approved :: Not open source',
         'Natural Language :: English',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10'
     ],
+    entry_points={
+        'console_scripts': [
+            'py-rich=pj_kafka_wrapper.cli.cli_cmd:main',
+        ],
+    },
 )
