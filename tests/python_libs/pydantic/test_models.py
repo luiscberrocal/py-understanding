@@ -31,18 +31,20 @@ def test_validators_path_exists():
     - It is a file
     - File exists."""
 
-    inexistent_file = '/blar/bal'
+    file_not_found = '/blar/bal'
 
     # with pytest.raises(ValueError) as ctx:
     v = Vendor(name='Wayne Enterprises', national_id='4555-55-5555', verification_digit='44',
-               source_file=inexistent_file)
+               source_file=file_not_found)
     # assert str(ctx.value) == ''
 
 
 def test_validator():
     with pytest.raises(ValueError) as ctx:
         g = GetInput(rank=-1)
-"12667777",
-"8999000",
-"iiooooo",
-"kkkkkkkkkkkkkkkkk",
+    assert 'Value Must be within range (0,1000000)' in str(ctx.value)
+
+def test_validator2():
+    with pytest.raises(ValueError) as ctx:
+        g = GetInput(rank=10, source_file='/ll/ll')
+    assert 'File not found ' in str(ctx.value)
