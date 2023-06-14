@@ -22,26 +22,13 @@ class Receipt(BaseModel):
     tax: Decimal = Field(description='Tax for the receipt', default='0.00')
     source_file: Optional[Path] = Field(description='Receipt file')
 
-    class Config:
-        arbitrary_types_allowed = True
+    # class Config:
+    #   arbitrary_types_allowed = True
 
     @validator('source_file')
-    def source_file_exists(cls, value):
-        if value:
-            if not value.exists():
-                message = 'source_file does not exist'
-                raise ValueError(message)
-        return value
-
-
-
-class GetInput(BaseModel):
-    rank: Optional[int] = None
-    interval: Optional[int] = None
-
-    @validator("rank")
-    def check_range(cls, v):
-        if v:
-            if not 0 < v < 1000001:
-                raise ValueError("Value Must be within range (0,1000000)")
-            return v
+    def force_value(cls, v):
+        if v is not None:
+            if not v.exists():
+                raise ValueError(f'File not found {v}')
+            else:
+                return v
