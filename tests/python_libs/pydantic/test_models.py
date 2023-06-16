@@ -1,7 +1,9 @@
 from decimal import Decimal
 from datetime import datetime
 import pytest
+from pydantic import BaseModel, Field
 
+from python_libs.pydantic.enums import Country
 from python_libs.pydantic.models import Vendor, Receipt, Customer
 
 
@@ -42,5 +44,23 @@ def test_validators_path_exists():
 
 
 def test_use_enum_values():
+    """Without use_enum_values the dictionary will have the Enum in the dictionary. This will bring problems. 
+    For example if you try to create a Django moddel from a dictionary the creation will give an error since the
+    dictionary serialization of the Enum will give  < Country.PANAMA: 'PA' > and this would break the model expecting
+    a 2 letter code."""
+    
+    class CustomerWithoutUseEnum(BaseModel):
+        name: str = Field(description='Name of the customer')
+        country: Country = Field(description='Two letters ISO country code')
+
+        class Config:
+            use_enum_values = False
+
     customer = Customer(name='Luis', country='CO')
-    print(customer)
+    customer_w = CustomerWithoutUseEnum(name='James', country='PA')
+    
+    print(f'{customer.dict()=}')
+    # customer.dict() = {'name': 'Luis', 'country': 'CO'}
+    
+    print(f'{customer_w.dict()=}')
+    # customer_w.dict() = {'name': 'James', 'country': < Country.PANAMA: 'PA' >}
