@@ -48,7 +48,7 @@ def test_use_enum_values():
     For example if you try to create a Django moddel from a dictionary the creation will give an error since the
     dictionary serialization of the Enum will give  < Country.PANAMA: 'PA' > and this would break the model expecting
     a 2 letter code."""
-    
+
     class CustomerWithoutUseEnum(BaseModel):
         name: str = Field(description='Name of the customer')
         country: Country = Field(description='Two letters ISO country code')
