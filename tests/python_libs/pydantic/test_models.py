@@ -2,7 +2,7 @@ from decimal import Decimal
 from datetime import datetime
 import pytest
 
-from python_libs.pydantic.models import Vendor, Receipt
+from python_libs.pydantic.models import Vendor, Receipt, Customer
 
 
 def test_create_receipt():
@@ -41,3 +41,6 @@ def test_validators_path_exists():
     assert 'File not found' in str(ctx.value)
 
 
+def test_use_enum_values():
+    customer = Customer(name='Luis', country='CO')
+    print(customer)
