@@ -1,0 +1,78 @@
+{
+    "title": "PaymentsFile",
+    "description": "File that contain a list of dictionaries containing payments.",
+    "type": "object",
+    "properties": {
+        "local_path": {
+            "title": "Local Path",
+            "description": "Local path to the file.",
+            "type": "string",
+            "format": "path"
+        },
+        "creation_date": {
+            "title": "Creation Date",
+            "description": "Datetime when the local file was created.",
+            "type": "string",
+            "format": "date-time"
+        },
+        "raw_hash_digest": {
+            "title": "Raw Hash Digest",
+            "description": "Hash digest for the file content as it was read from Kafka. Use hash_file function.",
+            "maxLength": 96,
+            "minLength": 96,
+            "type": "string"
+        },
+        "record_count": {
+            "title": "Record Count",
+            "description": "Records found in the file",
+            "minimum": 0,
+            "type": "integer"
+        },
+        "kafka_group": {
+            "title": "Kafka Group",
+            "description": "Kafka group used to consume the messages.",
+            "maxLength": 64,
+            "type": "string"
+        },
+        "processed_hash_digest": {
+            "title": "Processed Hash Digest",
+            "description": "Hash digest for the file content after being ordered and cleaned. Use hash_file function.",
+            "maxLength": 96,
+            "minLength": 96,
+            "type": "string"
+        },
+        "datadog_start_date": {
+            "title": "Datadog Start Date",
+            "description": "Date the file started to be sent to Datadog.",
+            "type": "string",
+            "format": "date-time"
+        },
+        "datadog_end_date": {
+            "title": "Datadog End Date",
+            "description": "Date the file finished being sent to Datadog.",
+            "type": "string",
+            "format": "date-time"
+        },
+        "data_dog_count": {
+            "title": "Data Dog Count",
+            "description": "Amount of records sent to Datadog.",
+            "minimum": 0,
+            "type": "integer"
+        },
+        "url": {
+            "title": "Url",
+            "description": "S3 http url.",
+            "minLength": 1,
+            "maxLength": 2083,
+            "format": "uri",
+            "type": "string"
+        }
+    },
+    "required": [
+        "local_path",
+        "creation_date",
+        "raw_hash_digest",
+        "record_count",
+        "kafka_group"
+    ]
+}
