@@ -1,4 +1,4 @@
-import json
+import csv
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -36,13 +36,16 @@ def extract_properties(model: BaseModel):
     return properties
 
 
-def save_schema_to_file(file: Path, model: PaymentsFile):
+def save_schema_to_file(file: Path, model: BaseModel) -> None:
+    properties = extract_properties(model)
+    columns = list(properties[0].keys())
+    columns.extend(['minLength', 'maxLength', 'minimum'])
     with open(file, 'w') as f:
-        json.dump(model.schema(), f, indent=4, default=str)
+        writer = csv.DictWriter(f, fieldnames=columns)
+        writer.writeheader()
+        writer.writerows(properties)
 
 
 if __name__ == '__main__':
-    folder = Path(__file__).parent.parent.parent / 'tests' / 'fixtures' / 'payments_file_schema.json'
-    props = extract_properties(PaymentsFile)
-    for p in props:
-        print(p)
+    csv_file = Path(__file__).parent.parent.parent / 'output' / 'payments_file_schema.csv'
+    save_schema_to_file(csv_file, PaymentsFile)
