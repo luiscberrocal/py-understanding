@@ -26,6 +26,11 @@ class StringShifter:
             shifted.append(shifted_char)
         return ''.join(shifted)
 
+    def calculate_shift(self, value: int) -> int:
+        # TODO Not working remainder calculations is wr0ng
+        new_value = len(self.characters) % value
+        return new_value
+
     def __len__(self):
         return len(self.characters)
 
@@ -52,3 +57,7 @@ if __name__ == '__main__':
     print(f'{string_2_shift=}')
     print(f'{shifted_string=}')
     print(f'{shifted_back=}')
+
+    shift = 1001
+    n = shifter.calculate_shift(shift)
+    print(f'{n=}')
