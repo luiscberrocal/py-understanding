@@ -5,7 +5,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field, validator
 
-from python_libs.pydantic.enums import VendorType
+from python_libs.pydantic.enums import VendorType, Country
 
 
 class Vendor(BaseModel):
@@ -32,3 +32,11 @@ class Receipt(BaseModel):
                 raise ValueError(f'File not found {v}')
             else:
                 return v
+
+
+class Customer(BaseModel):
+    name: str = Field(description='Name of the customer')
+    country: Country = Field(description='Two letters ISO country code')
+
+    class Config:
+        use_enum_values = True
