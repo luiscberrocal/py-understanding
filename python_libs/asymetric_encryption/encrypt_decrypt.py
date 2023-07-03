@@ -21,4 +21,12 @@ def create_or_read_keys(folder: Path, length: int = 1024):
 
 
 if __name__ == '__main__':
-    public, private = create_or_read_keys(Path(__file__).parent)
+    pub_key, priv_key = create_or_read_keys(Path(__file__).parent)
+
+    original_message = 'This is a secret message. 1256'
+    encrypted_message = rsa.encrypt(original_message.encode('utf-8'), pub_key=pub_key)
+
+    clear_message = rsa.decrypt(encrypted_message, priv_key=priv_key).decode('utf-8')
+
+    print(f'{original_message=}')
+    print(f'{clear_message=}')
