@@ -69,5 +69,18 @@ def send_simple_newsletter():
     mail_server.send_email(email)
 
 
+def send_simple_newsletter_with_attachments():
+    email, password = get_secrets()
+
+    mail_server = MailServer(sender_email=email, password=password)
+    news_letter_file = Path('simple_news_letter.html')
+    with open(news_letter_file, 'r') as f:
+        content = f.read()
+    attached_image = Path('obi-wan-1.jpeg')
+    email = EmailMessage(recipients=[email], subject='Daily Start of Labor Report',
+                         content=content, format=EmailFormat.HTML, attachments=[attached_image])
+    mail_server.send_email(email)
+
+
 if __name__ == '__main__':
-    send_simple_newsletter()
+    send_simple_newsletter_with_attachments()
