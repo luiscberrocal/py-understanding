@@ -56,6 +56,14 @@ if __name__ == '__main__':
     environment_file = environment_folder / 'sending_emails' / 'gmail_secrets.txt'
     dotenv_path = Path(environment_file)
     load_dotenv(dotenv_path=dotenv_path)
-    email = 'luis.berrocal.1942@gmail.com'
-    
-    # print(os.getenv('GMAIL_USER'))
+
+    email = os.getenv('GMAIL_USER')
+    password = os.getenv('GMAIL_SECRET')
+
+    mail_server = MailServer(sender_email=email, password=password)
+    content ="""Good morning:
+    This email is to report that I started working at 7:30 am.
+    """
+    email = EmailMessage(recipients=[email], subject='Daily Start of Labor Report',
+                         content=content, format=EmailFormat.TEXT)
+    response = mail_server.send_email(email)
