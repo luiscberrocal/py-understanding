@@ -6,11 +6,6 @@ from pydantic import BaseModel, Field
 from .enums import EmailFormat
 
 
-class SenderConfig(BaseModel):
-    email: str
-    password: str
-
-
 class EmailMessage(BaseModel):
     recipients: List[str]
     subject: str
