@@ -48,3 +48,14 @@ class MailServer:
         senders_response = session.sendmail(self.sender_email, email_message.recipients, text)
         session.quit()
         return senders_response
+
+if __name__ == '__main__':
+    from dotenv import load_dotenv
+    from pathlib import Path
+    environment_folder = Path(__file__).parent.parent.parent / '.envs'
+    environment_file = environment_folder / 'sending_emails' / 'gmail_secrets.txt'
+    dotenv_path = Path(environment_file)
+    load_dotenv(dotenv_path=dotenv_path)
+    email = 'luis.berrocal.1942@gmail.com'
+    
+    # print(os.getenv('GMAIL_USER'))
