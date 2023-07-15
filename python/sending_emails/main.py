@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from python.sending_emails.enums import EmailFormat
 from python.sending_emails.gmail import MailServer
@@ -52,8 +53,21 @@ def send_html_email_no_attachments():
     """
     email = EmailMessage(recipients=[email], subject='Daily Start of Labor Report',
                          content=content, format=EmailFormat.HTML)
-    response = mail_server.send_email(email)
+    mail_server.send_email(email)
+
+
+def send_simple_newsletter():
+    email, password = get_secrets()
+
+    mail_server = MailServer(sender_email=email, password=password)
+    news_letter_file = Path('simple_news_letter.html')
+    with open(news_letter_file, 'r') as f:
+        content = f.read()
+
+    email = EmailMessage(recipients=[email], subject='Daily Start of Labor Report',
+                         content=content, format=EmailFormat.HTML)
+    mail_server.send_email(email)
 
 
 if __name__ == '__main__':
-    send_html_email_no_attachments()
+    send_simple_newsletter()

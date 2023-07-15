@@ -48,22 +48,3 @@ class MailServer:
         senders_response = session.sendmail(self.sender_email, email_message.recipients, text)
         session.quit()
         return senders_response
-
-if __name__ == '__main__':
-    from dotenv import load_dotenv
-    from pathlib import Path
-    environment_folder = Path(__file__).parent.parent.parent / '.envs'
-    environment_file = environment_folder / 'sending_emails' / 'gmail_secrets.txt'
-    dotenv_path = Path(environment_file)
-    load_dotenv(dotenv_path=dotenv_path)
-
-    email = os.getenv('GMAIL_USER')
-    password = os.getenv('GMAIL_SECRET')
-
-    mail_server = MailServer(sender_email=email, password=password)
-    content ="""Good morning:
-    This email is to report that I started working at 7:30 am.
-    """
-    email = EmailMessage(recipients=[email], subject='Daily Start of Labor Report',
-                         content=content, format=EmailFormat.TEXT)
-    response = mail_server.send_email(email)
