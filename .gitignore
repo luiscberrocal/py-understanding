@@ -114,3 +114,4 @@ ENV/
 site/
 /output/
 /.envs/
+python_libs/pandas/data
