@@ -7,7 +7,7 @@ from .enums import EmailFormat
 
 
 class EmailMessage(BaseModel):
-    """Email message for the"""
+    """Email message model"""
     recipients: List[str] = Field(description='List of emails to send email to.')
     subject: str = Field(description='Subject of the email.')
     content: str = Field(description='Content of the email.')
