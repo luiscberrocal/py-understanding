@@ -20,10 +20,20 @@ def using_datetime_now():
     naive_date = datetime.now()
     timezone = pytz.timezone('America/Panama')
     aware_date = datetime.now(timezone)
-    print(f'Now date for Colombia: {naive_date.strftime(datetime_format)}')
-    print(f'Now date for Colombia: {aware_date.strftime(datetime_format)}')
+    print(f'Now naive date for Colombia: {naive_date.strftime(datetime_format)}')
+    print(f'Now aware date for Colombia: {aware_date.strftime(datetime_format)}')
 
+
+def convert_to_utc():
+    datetime_format = '%Y-%m-%d %H:%M:%S %Z%z'
+    timezone = pytz.timezone('America/Panama')
+    utc_timezone = pytz.utc
+    aware_date = datetime.now(timezone)
+    utc_date = aware_date.astimezone(utc_timezone)
+    print(f'Now UTC   date for Colombia: {utc_date.strftime(datetime_format)}')
+    print(f'Now -0500 date for Colombia: {aware_date.strftime(datetime_format)}')
 
 if __name__ == '__main__':
     # add_timezone_to_naive_date()
-    using_datetime_now()
+    # using_datetime_now()
+    convert_to_utc()
