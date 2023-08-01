@@ -39,7 +39,7 @@ def convert_to_utc():
     print('-' *80)
     delta = utc_date -pty_aware_date
     print(f'Delta: {delta}')
-    
+
 
 
 if __name__ == '__main__':
