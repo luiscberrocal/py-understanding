@@ -26,12 +26,16 @@ def using_datetime_now():
 
 def convert_to_utc():
     datetime_format = '%Y-%m-%d %H:%M:%S %Z%z'
-    timezone = pytz.timezone('America/Panama')
+    naive_date = datetime(2023, 3, 22, 13, 15, 15)
+    pty_timezone = pytz.timezone('America/Panama')
     utc_timezone = pytz.utc
-    aware_date = datetime.now(timezone)
-    utc_date = aware_date.astimezone(utc_timezone)
+    pty_aware_date = pty_timezone.localize(naive_date, is_dst=None)
+    # utc_date = pty_aware_date.astimezone(utc_timezone)
+    # utc_date = utc_timezone.localize(pty_aware_date, is_dst=None)
+    utc_date = pty_aware_date.astimezone(utc_timezone)
     print(f'Now UTC   date for Colombia: {utc_date.strftime(datetime_format)}')
-    print(f'Now -0500 date for Colombia: {aware_date.strftime(datetime_format)}')
+    print(f'Now -0500 date for Colombia: {pty_aware_date.strftime(datetime_format)}')
+
 
 if __name__ == '__main__':
     # add_timezone_to_naive_date()
