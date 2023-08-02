@@ -29,17 +29,21 @@ def convert_to_utc():
     naive_date = datetime(2023, 3, 22, 13, 15, 15)
     pty_timezone = pytz.timezone('America/Panama')
     utc_timezone = pytz.utc
-    # pty_aware_date = pty_timezone.localize(naive_date, is_dst=None)
-    pty_aware_date = datetime.now(pty_timezone)
+    pty_aware_date = pty_timezone.localize(naive_date, is_dst=None)
+    # pty_aware_date = datetime.now(pty_timezone)
     # utc_date = pty_aware_date.astimezone(utc_timezone)
     # utc_date = utc_timezone.localize(pty_aware_date, is_dst=None)
     utc_date = pty_aware_date.astimezone(utc_timezone)
     print(f'Now UTC   date for Colombia: {utc_date.strftime(datetime_format)}')
     print(f'Now -0500 date for Colombia: {pty_aware_date.strftime(datetime_format)}')
-    print('-' *80)
-    delta = utc_date -pty_aware_date
+    print('-' * 80)
+    # Conclusions if the dates are the same but if different timezon representations the delta is 0
+    delta = utc_date - pty_aware_date
     print(f'Delta: {delta}')
-
+    print('-' * 80)
+    # Conclusion: If the dates are the same but in differetne timezone representations the timestamp is the same
+    print(f'UTC   timestamp for Colombia: {int(utc_date.timestamp())}')
+    print(f'-0500 timestamp for Colombia: {int(pty_aware_date.timestamp())}')
 
 
 if __name__ == '__main__':
