@@ -10,20 +10,24 @@ def unzip_all(zip_file: Path, target_folder: Path, password: str):
 
 
 def unzip_file(zip_file: Path, target_folder: Path, password: str):
-    with zipfile.ZipFile(zip_file, 'r') as zip:
-        files = zip.namelist()
+    with zipfile.ZipFile(zip_file, 'r') as zf:
+        files = zf.namelist()
         for file in files:
-            zip.extract(file, target_folder, pwd=password.encode('utf-8'))
+            zf.extract(file, target_folder, pwd=password.encode('utf-8'))
     return files
 
 
 def zip_folder(zip_file: Path, folder: Path, password: str):
     files = folder.glob('**/*.*')
-    with zipfile.ZipFile(zip_file, 'w') as zip:
+    zipped_files = []
+    with zipfile.ZipFile(zip_file, 'w') as zf:
+        if password is not None:
+            zf.setpassword(password.encode('utf-8'))
         for file in files:
             file_path = folder / file
-            zip.write(file_path)
-    return list(files)
+            zipped_files.append(file_path)
+            zf.write(file_path)
+    return zipped_files
 
 
 if __name__ == '__main__':
@@ -38,5 +42,5 @@ if __name__ == '__main__':
 
     new_zip = output_folder / 'test.zip'
     folder_to_zip = Path(__file__).parent.parent / 'json'
-    files_zipped = zip_folder(zip_file=new_zip, folder=folder_to_zip, password=None)
+    files_zipped = zip_folder(zip_file=new_zip, folder=folder_to_zip, password=pwd)
     print(files_zipped)
