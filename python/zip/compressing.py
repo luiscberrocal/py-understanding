@@ -32,7 +32,9 @@ def zip_folder(zip_file: Path, folder: Path, password: str):
 
 if __name__ == '__main__':
     # https://datagy.io/python-zip-unzip-files/#:~:text=In%20order%20to%20extract%20all,members%20of%20the%20zip%20file.&text=In%20the%20example%20above%2C%20we%20can%20see%20how%20simple%20it,files%20from%20a%20zip%20file.
-    output_folder = Path(__file__).parent.parent.parent / 'output'
+    # obsidian://open?vault=django-blog&file=Zipping%20a%20file%20with%20password
+
+    output_folder = Path(__file__).parent.parent.parent / 'outpout'
     # zip -P pass123 ccat-command.zip ./davinci_resolve/*.*
     z_file = Path('compressed_folder_pwd.zip')
     pwd = 'pass123'
