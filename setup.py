@@ -12,7 +12,7 @@ except ImportError:
 
 setup(
     name='python_libs',
-    version='0.7.0',
+    version='0.7.1',
     description="""Testt""",
     long_description="Long description",
     author='Luis Carlos Berrocal',
