@@ -28,5 +28,5 @@ def clean(folder: Path, glob_pattern: str, max_age: int = 0):
 
 if __name__ == '__main__':
     downloads = Path.home() / 'Downloads'
-    g_pattern = '*.pdf'
-    clean(folder=downloads, glob_pattern=g_pattern, max_age=120)
+    g_pattern = '*.zip'
+    clean(folder=downloads, glob_pattern=g_pattern) #, max_age=120)
