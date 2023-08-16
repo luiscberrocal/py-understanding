@@ -1,9 +1,12 @@
 import csv
+import json
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
 from pydantic import BaseModel, Field, HttpUrl
+
+from python_libs.pydantic.model_config import Payload
 
 
 class PaymentsFile(BaseModel):
@@ -45,7 +48,17 @@ def save_schema_to_file(file: Path, model: BaseModel) -> None:
         writer.writeheader()
         writer.writerows(properties)
 
+def save_schema(model: BaseModel, file: Path):
+    with open(file, 'w') as f:
+        json.dump(model.schema(), f, indent=4)
 
 if __name__ == '__main__':
-    csv_file = Path(__file__).parent.parent.parent / 'output' / 'payments_file_schema.csv'
-    save_schema_to_file(csv_file, PaymentsFile)
+    output_folder = Path(__file__).parent.parent.parent / 'output'
+    # csv_file = output_folder / 'payments_file_schema.csv'
+    # save_schema_to_file(csv_file, PaymentsFile)
+
+    j_file = output_folder / 'payments_file_schema.json'
+    save_schema(PaymentsFile, j_file)
+
+    j_file = output_folder / 'payload_schema.json'
+    save_schema(Payload, j_file)
