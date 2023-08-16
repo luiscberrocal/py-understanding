@@ -4,6 +4,7 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
+
 # https://docs.pydantic.dev/1.10/usage/model_config/
 class Data(BaseModel):
     auth: str = Field(default='00000000')
@@ -29,4 +30,3 @@ class Payload(BaseModel):
 
     class Config:
         allow_population_by_field_name = True
-
