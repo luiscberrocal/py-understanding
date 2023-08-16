@@ -40,3 +40,32 @@ class Customer(BaseModel):
 
     class Config:
         use_enum_values = True
+
+
+class Account(BaseModel):
+    customer: Customer
+    country: Country
+
+    class Config:
+        use_enum_values = False
+
+
+def compare_enum_results():
+    customer = Customer(name='James Bond', country=Country.COLOMBIA)
+    account = Account(customer=customer, country=Country.COLOMBIA)
+
+    print(f'Customer: {customer.dict()}')
+    print(f'Account:  {account.dict()}')
+
+    print(f'Customer country: {customer.country}  {len(customer.country)}')
+    print(f'Account  country: {account.country}  {len(account.country)}')
+
+    customer_dict = customer.dict()
+    account_dict = account.dict()
+
+    print(f'Customer dict country: {customer_dict["country"]}  {len(customer_dict["country"])}')
+    print(f'Account  dict country: {account_dict["country"]}  {len(account_dict["country"])}')
+
+
+if __name__ == '__main__':
+    compare_enum_results()
