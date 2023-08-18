@@ -72,11 +72,11 @@ def problem_use_enum_false():
     customer = Customer(name='James Bond', country=Country.COLOMBIA)
     account = Account(customer=customer, country=Country.COLOMBIA)
 
-    account_json = str(account.dict())
+    account_json = json.dumps(str(account))
 
     print(account_json)
 
-    account_dict = json.loads(account_json, default=str)
+    account_dict = json.loads(account_json)
 
     print(account_dict)
 
