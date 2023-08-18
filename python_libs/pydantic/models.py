@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
@@ -53,9 +54,10 @@ class Account(BaseModel):
 def compare_enum_results():
     customer = Customer(name='James Bond', country=Country.COLOMBIA)
     account = Account(customer=customer, country=Country.COLOMBIA)
+    # Cohersing dictionary to string shows differences
 
-    print(f'Customer: {customer.dict()}')
-    print(f'Account:  {account.dict()}')
+    print(f'Customer: {customer.dict(include={"country": True})}')
+    print(f'Account:  {account.dict(include={"country": True})}')
 
     print(f'Customer country: {customer.country}  {len(customer.country)}')
     print(f'Account  country: {account.country}  {len(account.country)}')
@@ -66,6 +68,18 @@ def compare_enum_results():
     print(f'Customer dict country: {customer_dict["country"]}  {len(customer_dict["country"])}')
     print(f'Account  dict country: {account_dict["country"]}  {len(account_dict["country"])}')
 
+def problem_use_enum_false():
+    customer = Customer(name='James Bond', country=Country.COLOMBIA)
+    account = Account(customer=customer, country=Country.COLOMBIA)
+
+    account_json = str(account.dict())
+
+    print(account_json)
+
+    account_dict = json.loads(account_json)
+
+    print(account_dict)
 
 if __name__ == '__main__':
-    compare_enum_results()
+    # compare_enum_results()
+    problem_use_enum_false()
