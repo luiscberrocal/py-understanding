@@ -76,7 +76,7 @@ def problem_use_enum_false():
 
     print(account_json)
 
-    account_dict = json.loads(account_json)
+    account_dict = json.loads(account_json, default=str)
 
     print(account_dict)
 
