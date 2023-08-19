@@ -48,9 +48,11 @@ def save_schema_to_file(file: Path, model: BaseModel) -> None:
         writer.writeheader()
         writer.writerows(properties)
 
+
 def save_schema(model: BaseModel, file: Path):
     with open(file, 'w') as f:
         json.dump(model.schema(), f, indent=4)
+
 
 if __name__ == '__main__':
     output_folder = Path(__file__).parent.parent.parent / 'output'
