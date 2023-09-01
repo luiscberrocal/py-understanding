@@ -46,6 +46,7 @@ def convert_to_utc():
     print(f'UTC   timestamp for Colombia: {int(utc_date.timestamp())}')
     print(f'-0500 timestamp for Colombia: {int(pty_aware_date.timestamp())}')
 
+
 def datetime_created_with_timezone():
     """
     Do not user pytz.timezone to create a datetime use ZoneInfo.
@@ -68,5 +69,3 @@ if __name__ == '__main__':
     # convert_to_utc()
 
     datetime_created_with_timezone()
-
-
