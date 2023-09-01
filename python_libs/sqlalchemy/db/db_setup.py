@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 SQLITE_FILE = Path(__file__).parent / 'requirements_db.sqlite'
 SQLALCHEMY_DATABASE_URL = f"sqlite://{SQLITE_FILE}"
 
+# future = True allows to use async calls to sqlalchemy
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={}, future=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True)
 
