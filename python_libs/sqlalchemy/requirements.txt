@@ -1,0 +1,4 @@
+-r ../../requirements.txt
+
+pydantic==1.10.12
+SQLAlchemy==2.0.20
