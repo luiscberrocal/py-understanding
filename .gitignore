@@ -115,3 +115,5 @@ site/
 /output/
 /.envs/
 python_libs/pandas/data
+
+.jupyter/desktop-workspaces
