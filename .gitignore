@@ -117,3 +117,4 @@ site/
 python_libs/pandas/data
 
 .jupyter/desktop-workspaces
+python_libs/ploomber/.jupyter/desktop-workspaces
