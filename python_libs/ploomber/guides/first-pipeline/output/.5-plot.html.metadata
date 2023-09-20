@@ -1,0 +1,1 @@
+{"timestamp": 1695125189.811257, "stored_source_code": "\"\"\"\nVisualize\n\"\"\"\n# this is an annotated script\nimport pandas as pd\nimport seaborn as sns\nupstream = ['3-clean']\nproduct = None\ndf = pd.read_parquet(upstream['3-clean']['data'])\nsns.displot(df.death_percents)\nsns.displot(df.cases)\nsns.displot(df.deaths)\ndf.head()", "params": {}}
