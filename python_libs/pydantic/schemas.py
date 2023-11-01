@@ -64,3 +64,4 @@ if __name__ == '__main__':
 
     j_file = output_folder / 'payload_schema.json'
     save_schema(Payload, j_file)
+    print(f'Saved file {j_file}')
