@@ -1,3 +1,5 @@
 -r ../../requirements.txt
 
 pydantic==1.10.8
+jsonschema==4.19.0
+factory-boy==3.3.0

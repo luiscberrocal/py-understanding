@@ -1,1 +1,0 @@
-{"timestamp": 1695124723.610942, "stored_source_code": "\"\"\"\nGet data\n\"\"\"\nimport pandas as pd\nfrom pathlib import Path\nupstream = None\nproduct = None\ndf = pd.read_csv(\"https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv\")\ndf.head()\nPath('output').mkdir(exist_ok=True)\n\ndf.to_csv(str(product['data']), index=False)\n", "params": {}}
