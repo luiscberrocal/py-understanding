@@ -1,0 +1,143 @@
+{
+  "definitions": {
+    "VendorType": {
+      "title": "VendorType",
+      "description": "An enumeration.",
+      "enum": [
+        "PERSON",
+        "COMPANY"
+      ],
+      "type": "string"
+    },
+    "Vendor": {
+      "title": "Vendor",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "description": "Name of the vendor.",
+          "maxLength": 64,
+          "type": "string"
+        },
+        "national_id": {
+          "title": "National Id",
+          "description": "National id of the vendor.",
+          "default": "NOT SUPPLIED",
+          "maxLength": 32,
+          "type": "string"
+        },
+        "verification_digit": {
+          "title": "Verification Digit",
+          "description": "Verification digit of the National Id.",
+          "maxLength": 2,
+          "type": "string"
+        },
+        "vendor_type": {
+          "description": "Type of vendor i.e. person or company.",
+          "default": "COMPANY",
+          "allOf": [
+            {
+              "$ref": "#/definitions/VendorType"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "Receipt": {
+      "title": "Receipt",
+      "type": "object",
+      "properties": {
+        "vendor": {
+          "title": "Vendor",
+          "description": "Vendor of the receipt.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Vendor"
+            }
+          ]
+        },
+        "date": {
+          "title": "Date",
+          "description": "Date of the receipt.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "amount": {
+          "title": "Amount",
+          "description": "Total amount of the receipt.",
+          "exclusiveMinimum": "0.00",
+          "type": "number"
+        },
+        "tax": {
+          "title": "Tax",
+          "description": "Tax for the receipt",
+          "default": "0.00",
+          "type": "number"
+        },
+        "source_file": {
+          "title": "Source File",
+          "description": "Receipt file",
+          "type": "string",
+          "format": "path"
+        }
+      },
+      "required": [
+        "vendor",
+        "date",
+        "amount"
+      ]
+    },
+    "Country": {
+      "title": "Country",
+      "description": "An enumeration.",
+      "enum": [
+        "PA",
+        "CO",
+        "MX"
+      ],
+      "type": "string"
+    },
+    "Customer": {
+      "title": "Customer",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "description": "Name of the customer",
+          "type": "string"
+        },
+        "country": {
+          "description": "Two letters ISO country code",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Country"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "country"
+      ]
+    },
+    "Account": {
+      "title": "Account",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "$ref": "#/definitions/Customer"
+        },
+        "country": {
+          "$ref": "#/definitions/Country"
+        }
+      },
+      "required": [
+        "customer",
+        "country"
+      ]
+    }
+  }
+}
