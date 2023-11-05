@@ -49,7 +49,7 @@ class CustomerFactory(factory.Factory):
         model = Customer
 
     name = factory.Faker('name')
-    country = Country.US
+    country = Country.PANAMA
 
 
 class AccountFactory(factory.Factory):
@@ -57,4 +57,4 @@ class AccountFactory(factory.Factory):
         model = Account
 
     customer = factory.SubFactory(CustomerFactory)
-    country = Country.US
+    country = Country.PANAMA
