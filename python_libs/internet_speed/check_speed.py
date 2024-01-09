@@ -13,8 +13,8 @@ from rich.spinner import Spinner
 from rich.text import Text
 from speedtest import Speedtest, SpeedtestBestServerFailure
 
-from python_libs.internet_speed.events import Observer
-from python_libs.internet_speed.schemas import SpeedSample
+from .events import Observer
+from .schemas import SpeedSample
 
 
 class SpeedTestResult(BaseModel):

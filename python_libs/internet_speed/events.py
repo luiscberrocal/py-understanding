@@ -4,7 +4,7 @@ from pathlib import Path
 
 from rich.progress import track
 
-from python_libs.internet_speed.schemas import SpeedSample
+from .schemas import SpeedSample
 
 
 class Subject:
