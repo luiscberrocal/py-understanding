@@ -59,21 +59,5 @@ class Observer:
                 writer.writerows(property_list)
 
 
-if __name__ == '__main__':
-    o_folder = Path(__file__).parent.parent.parent / "output"
-    ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    csv_file = o_folder / f"speed_test_{ts}.csv"
 
-    now = datetime.now()
-    sample: SpeedSample = SpeedSample(machine='Dell', download=120, upload=12, elapsed_time=30, date=now)
-    sample1: SpeedSample = SpeedSample(machine='Dell', download=124, upload=13, elapsed_time=32, date=now)
-
-    observer = Observer(csv_file)
-    observer.update(sample1)
-    print('Waiting....')
-    time.sleep(60)
-    observer.update(sample)
-    print('Waiting....')
-    time.sleep(60)
-    observer.update(sample)
 

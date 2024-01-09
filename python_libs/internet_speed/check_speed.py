@@ -65,6 +65,6 @@ if __name__ == '__main__':
         if (total_runs-1) != i:
             time.sleep(sleep_seconds)
 
-    with open(json_file, "a") as f:
-        json.dump(test_list, f)
-    print(f'Finished {json_file}')
+    # with open(json_file, "a") as f:
+    #    json.dump(test_list, f)
+    print(f'Finished')
