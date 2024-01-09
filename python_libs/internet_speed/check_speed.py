@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Tuple
 
+import click
 import speedtest
 from pydantic import BaseModel
 
@@ -50,21 +51,23 @@ if __name__ == '__main__':
     wait_minutes_max = 5
     for i in range(total_runs):
         sleep_seconds = 60 * random.random() * wait_minutes_max
-        results = check(verbose=True)
-        print(f"{i} Test took: {results[2]:.2f} seconds")
+        try:
+            results = check(verbose=True)
+            print(f"{i} Test took: {results[2]:.2f} seconds")
 
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        speed_result = {"machine": "Dell", "download": results[0], "upload": results[1],
-                        "elapsed_time": results[2], "date": now}
-        speed_sample = SpeedSample(**speed_result)
-        observer.update(speed_sample)
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            speed_result = {"machine": "Dell", "download": results[0], "upload": results[1],
+                            "elapsed_time": results[2], "date": now}
+            speed_sample = SpeedSample(**speed_result)
+            observer.update(speed_sample)
 
-        test_list.append(speed_result)
-        print(f'Sleeping for {sleep_seconds/60:.2f} minutes')
-        print('-' * 80)
-        if (total_runs-1) != i:
-            time.sleep(sleep_seconds)
-
+            test_list.append(speed_result)
+            print(f'Sleeping for {sleep_seconds/60:.2f} minutes')
+            print('-' * 80)
+            if (total_runs-1) != i:
+                time.sleep(sleep_seconds)
+        except speedtest.SpeedtestBestServerFailure as e:
+            click.secho(f'Skipped {i} {e}', fg='red')
     # with open(json_file, "a") as f:
     #    json.dump(test_list, f)
     print(f'Finished')
