@@ -35,10 +35,13 @@ def check(verbose: bool) -> Tuple[float, float, float]:
 
 if __name__ == '__main__':
     o_folder = Path(__file__).parent.parent.parent / "output"
-    print(o_folder, o_folder.exists())
+    ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+    json_file = o_folder / f"speed_test_{ts}.json"
+
+    # print(o_folder, o_folder.exists())
     test_list = []
-    total_runs = 1
-    sleep_seconds = 60
+    total_runs = 12
+    sleep_seconds = 60 * 5
     for i in range(total_runs):
         results = check(verbose=True)
         print(f"{i} Test took: {results[2]:.2f} seconds")
@@ -47,8 +50,9 @@ if __name__ == '__main__':
         speed_result = {"machine": "Dell", "download": results[0], "upload": results[1],
                         "elapsed_time": results[2], "date": now}
         test_list.append(speed_result)
+        print(f'Sleeping for {sleep_seconds/60:.2f} minutes')
         print('-' * 80)
-    json_file = o_folder / "speed_test.json"
+        time.sleep(sleep_seconds)
 
-    with open(json_file, "wa") as f:
+    with open(json_file, "a") as f:
         json.dump(test_list, f)
