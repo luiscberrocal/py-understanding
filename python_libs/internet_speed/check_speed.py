@@ -7,6 +7,7 @@ from typing import Tuple
 import click
 import speedtest
 from pydantic import BaseModel
+from rich.progress import track
 
 from python_libs.internet_speed.events import Observer
 from python_libs.internet_speed.schemas import SpeedSample
@@ -45,11 +46,11 @@ if __name__ == '__main__':
     csv_file = o_folder / f"speed_test_{ts}.csv"
     observer = Observer(csv_file)
     # print(o_folder, o_folder.exists())
-    test_list = []
+
     total_runs = 12
     wait_minutes_max = 5
     for i in range(total_runs):
-        sleep_seconds = 60 * random.random() * wait_minutes_max
+        sleep_seconds = int(60 * random.random() * wait_minutes_max)
         try:
             results = check(verbose=True)
             print(f"{i} Test took: {results[2]:.2f} seconds")
@@ -59,12 +60,12 @@ if __name__ == '__main__':
                             "elapsed_time": results[2], "date": now}
             speed_sample = SpeedSample(**speed_result)
             observer.update(speed_sample)
-
-            test_list.append(speed_result)
-            print(f'Sleeping for {sleep_seconds / 60:.2f} minutes')
             print('-' * 80)
-            if (total_runs - 1) != i:
-                time.sleep(sleep_seconds)
+            for i in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds/60} minutes..."):
+                time.sleep(1)  # Simulate work being done
+           #  print(f'Sleeping for {sleep_seconds / 60:.2f} minutes')
+           #  if (total_runs - 1) != i:
+           #      time.sleep(sleep_seconds)
         except speedtest.SpeedtestBestServerFailure as e:
             click.secho(f'Skipped {i} {e}', fg='red')
     # with open(json_file, "a") as f:

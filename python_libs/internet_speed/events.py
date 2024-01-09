@@ -1,7 +1,8 @@
 import time
 from csv import DictWriter
-from datetime import datetime
 from pathlib import Path
+
+from rich.progress import track
 
 from python_libs.internet_speed.schemas import SpeedSample
 
@@ -59,5 +60,7 @@ class Observer:
                 writer.writerows(property_list)
 
 
-
-
+if __name__ == '__main__':
+    sleep_seconds = int(3 * 60)
+    for i in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds / 60} minutes..."):
+        time.sleep(1)  # Simulate work being done
