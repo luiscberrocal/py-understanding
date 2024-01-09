@@ -1,4 +1,5 @@
 import json
+import random
 import time
 from datetime import datetime
 from pathlib import Path
@@ -41,8 +42,9 @@ if __name__ == '__main__':
     # print(o_folder, o_folder.exists())
     test_list = []
     total_runs = 12
-    sleep_seconds = 60 * 5
+    wait_minutes_max = 5
     for i in range(total_runs):
+        sleep_seconds = 60 * random.randint(0, wait_minutes_max)
         results = check(verbose=True)
         print(f"{i} Test took: {results[2]:.2f} seconds")
 
@@ -52,7 +54,9 @@ if __name__ == '__main__':
         test_list.append(speed_result)
         print(f'Sleeping for {sleep_seconds/60:.2f} minutes')
         print('-' * 80)
-        time.sleep(sleep_seconds)
+        if (total_runs-1) != i:
+            time.sleep(sleep_seconds)
 
     with open(json_file, "a") as f:
         json.dump(test_list, f)
+    print(f'Finished {json_file}')
