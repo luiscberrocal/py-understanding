@@ -5,9 +5,12 @@ from pathlib import Path
 from typing import Tuple
 
 import click
-import speedtest
 from pydantic import BaseModel
+from rich.live import Live
 from rich.progress import track
+from rich.spinner import Spinner
+from rich.text import Text
+from speedtest import Speedtest
 
 from python_libs.internet_speed.events import Observer
 from python_libs.internet_speed.schemas import SpeedSample
@@ -23,15 +26,18 @@ def bytes_to_mb(bytes: float) -> float:
     return bytes / MB
 
 
-def check(verbose: bool) -> Tuple[float, float, float]:
+def check(speed_test: Speedtest, verbose: bool) -> Tuple[float, float, float]:
     start_time = time.time()
-    speed_test = speedtest.Speedtest()
 
-    download_speed = bytes_to_mb(speed_test.download())
+    spinner = Spinner('dots3', text=Text('Checking download speed...', style='green'))
+    with Live(spinner):
+        download_speed = bytes_to_mb(speed_test.download())
     if verbose:
         print(f"Your Download speed is {download_speed:.2f}")
 
-    upload_speed = bytes_to_mb(speed_test.upload())
+    spinner = Spinner('dots3', text=Text('Checking upload speed...', style='green'))
+    with Live(spinner):
+        upload_speed = bytes_to_mb(speed_test.upload())
     if verbose:
         print(f"Your Upload speed is    {upload_speed:.2f}")
     elapsed_time = time.time() - start_time
@@ -39,6 +45,7 @@ def check(verbose: bool) -> Tuple[float, float, float]:
 
 
 if __name__ == '__main__':
+    sp_test = Speedtest()
     o_folder = Path(__file__).parent.parent.parent / "output"
     ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
     json_file = o_folder / f"speed_test_{ts}.json"
@@ -52,7 +59,7 @@ if __name__ == '__main__':
     for i in range(total_runs):
         sleep_seconds = int(60 * random.random() * wait_minutes_max)
         try:
-            results = check(verbose=True)
+            results = check(speed_test=sp_test, verbose=True)
             print(f"{i} Test took: {results[2]:.2f} seconds")
 
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -61,7 +68,7 @@ if __name__ == '__main__':
             speed_sample = SpeedSample(**speed_result)
             observer.update(speed_sample)
             print('-' * 80)
-            for _ in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds/60:.2f} minutes..."):
+            for _ in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds / 60:.2f} minutes..."):
                 time.sleep(1)  # Simulate work being done
         except speedtest.SpeedtestBestServerFailure as e:
             click.secho(f'Skipped {i} {e}', fg='red')
