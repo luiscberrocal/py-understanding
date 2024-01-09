@@ -33,7 +33,7 @@ def check(verbose: bool) -> Tuple[float, float, float]:
 
     upload_speed = bytes_to_mb(speed_test.upload())
     if verbose:
-        print(f"Your Upload speed is {upload_speed:.2f}")
+        print(f"Your Upload speed is    {upload_speed:.2f}")
     elapsed_time = time.time() - start_time
     return download_speed, upload_speed, elapsed_time
 
@@ -61,11 +61,8 @@ if __name__ == '__main__':
             speed_sample = SpeedSample(**speed_result)
             observer.update(speed_sample)
             print('-' * 80)
-            for i in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds/60} minutes..."):
+            for _ in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds/60:.2f} minutes..."):
                 time.sleep(1)  # Simulate work being done
-           #  print(f'Sleeping for {sleep_seconds / 60:.2f} minutes')
-           #  if (total_runs - 1) != i:
-           #      time.sleep(sleep_seconds)
         except speedtest.SpeedtestBestServerFailure as e:
             click.secho(f'Skipped {i} {e}', fg='red')
     # with open(json_file, "a") as f:
