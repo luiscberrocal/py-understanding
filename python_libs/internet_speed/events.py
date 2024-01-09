@@ -48,7 +48,7 @@ class Observer:
 
     def update(self, sample: SpeedSample):
         property_list = [sample.model_dump()]
-        if self.file.exists():
+        if not self.file.exists():
             with open(self.file, 'w') as f:
                 writer = DictWriter(f, fieldnames=list(property_list[0].keys()))
                 writer.writeheader()
@@ -62,14 +62,18 @@ class Observer:
 if __name__ == '__main__':
     o_folder = Path(__file__).parent.parent.parent / "output"
     ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    json_file = o_folder / f"speed_test_{ts}.csv"
+    csv_file = o_folder / f"speed_test_{ts}.csv"
 
     now = datetime.now()
     sample: SpeedSample = SpeedSample(machine='Dell', download=120, upload=12, elapsed_time=30, date=now)
     sample1: SpeedSample = SpeedSample(machine='Dell', download=124, upload=13, elapsed_time=32, date=now)
 
-    observer = Observer(json_file)
+    observer = Observer(csv_file)
     observer.update(sample1)
+    print('Waiting....')
+    time.sleep(60)
+    observer.update(sample)
+    print('Waiting....')
     time.sleep(60)
     observer.update(sample)
 

@@ -8,6 +8,9 @@ from typing import Tuple
 import speedtest
 from pydantic import BaseModel
 
+from python_libs.internet_speed.events import Observer
+from python_libs.internet_speed.schemas import SpeedSample
+
 
 class SpeedTestResult(BaseModel):
     pass
@@ -39,18 +42,23 @@ if __name__ == '__main__':
     ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
     json_file = o_folder / f"speed_test_{ts}.json"
 
+    csv_file = o_folder / f"speed_test_{ts}.csv"
+    observer = Observer(csv_file)
     # print(o_folder, o_folder.exists())
     test_list = []
     total_runs = 12
     wait_minutes_max = 5
     for i in range(total_runs):
-        sleep_seconds = 60 * random.randint(0, wait_minutes_max)
+        sleep_seconds = 60 * random.random() * wait_minutes_max
         results = check(verbose=True)
         print(f"{i} Test took: {results[2]:.2f} seconds")
 
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         speed_result = {"machine": "Dell", "download": results[0], "upload": results[1],
                         "elapsed_time": results[2], "date": now}
+        speed_sample = SpeedSample(**speed_result)
+        observer.update(speed_sample)
+
         test_list.append(speed_result)
         print(f'Sleeping for {sleep_seconds/60:.2f} minutes')
         print('-' * 80)
