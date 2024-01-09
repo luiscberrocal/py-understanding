@@ -1,4 +1,3 @@
-import json
 import random
 import time
 from datetime import datetime
@@ -62,9 +61,9 @@ if __name__ == '__main__':
             observer.update(speed_sample)
 
             test_list.append(speed_result)
-            print(f'Sleeping for {sleep_seconds/60:.2f} minutes')
+            print(f'Sleeping for {sleep_seconds / 60:.2f} minutes')
             print('-' * 80)
-            if (total_runs-1) != i:
+            if (total_runs - 1) != i:
                 time.sleep(sleep_seconds)
         except speedtest.SpeedtestBestServerFailure as e:
             click.secho(f'Skipped {i} {e}', fg='red')
