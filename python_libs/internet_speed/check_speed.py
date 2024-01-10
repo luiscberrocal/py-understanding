@@ -13,6 +13,7 @@ from rich.spinner import Spinner
 from rich.text import Text
 from speedtest import Speedtest, SpeedtestBestServerFailure
 
+from python_libs.internet_speed.wifi_info import get_wifi_ssid
 from .events import Observer
 from .schemas import SpeedSample
 
@@ -74,6 +75,15 @@ def getting_best_server():
     return speed_test
 
 
+def build_sample_schema(computer_name: str, check_results: Tuple[float, float, float]) -> SpeedSample:
+    ssid = get_wifi_ssid()
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    speed_result = {"machine": computer_name, "download": check_results[0], "upload": check_results[1],
+                    "elapsed_time": check_results[2], "date": now, "ssid": ssid}
+    sample = SpeedSample(**speed_result)
+    return sample
+
+
 if __name__ == '__main__':
     load_environment_variables('internet_speed_vars.txt')
 
@@ -81,25 +91,24 @@ if __name__ == '__main__':
 
     o_folder = Path(__file__).parent.parent.parent / "output"
     ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    json_file = o_folder / f"speed_test_{ts}.json"
+    # json_file = o_folder / f"speed_test_{ts}.json"
 
     csv_file = o_folder / f"speed_test_{ts}.csv"
+
     observer = Observer(csv_file)
     # print(o_folder, o_folder.exists())
 
     total_runs = int(os.getenv('INTERNET_SPEED_RUNS'))
     wait_minutes_max = int(os.getenv('INTERNET_SPEED_WAIT_MAX'))
     machine_name = os.getenv('INTERNET_SPEED_MACHINE')
+
     for i in range(total_runs):
         sleep_seconds = int(60 * random.random() * wait_minutes_max)
         try:
             results = check(speed_test=sp_test, verbose=True)
-            print(f"{i} Test took: {results[2]:.2f} seconds")
+            print(f"Test {i + 1} took: {results[2]:.2f} seconds")
 
-            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            speed_result = {"machine": machine_name, "download": results[0], "upload": results[1],
-                            "elapsed_time": results[2], "date": now}
-            speed_sample = SpeedSample(**speed_result)
+            speed_sample = build_sample_schema(computer_name=machine_name, check_results=results)
             observer.update(speed_sample)
             print('-' * 80)
             for _ in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds / 60:.2f} minutes...",
@@ -107,6 +116,4 @@ if __name__ == '__main__':
                 time.sleep(1)  # Simulate work being done
         except SpeedtestBestServerFailure as e:
             click.secho(f'Skipped {i} {e}', fg='red')
-    # with open(json_file, "a") as f:
-    #    json.dump(test_list, f)
     print(f'Finished')
