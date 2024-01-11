@@ -67,7 +67,8 @@ def getting_best_server():
     with Live(spinner, transient=True):
         speed_test = Speedtest()
 
-    speed_test.get_servers(servers=["21586", "13884"])
+    servers = speed_test.get_servers(servers=['53427'])
+    print(servers)
 
     spinner = Spinner('dots3', text=Text('Checking best server...', style='green'))
     with Live(spinner, transient=True):

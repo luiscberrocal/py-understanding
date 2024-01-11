@@ -1,0 +1,33 @@
+<settings>
+    <servers>
+        <server url="http://velocidad.pacificnetcom.com:8080/speedtest/upload.php" lat="8.9824" lon="-79.5199"
+                name="Panama City" country="Panama" cc="PA" sponsor="Pacific Network Communication S.A." id="40265"
+                host="velocidad.pacificnetcom.com:8080"/>
+        <server url="http://speed.golddata.com.pa:8080/speedtest/upload.php" lat="8.9824" lon="-79.5199"
+                name="Panama City" country="Panama" cc="PA" sponsor="Gold Data Panama" id="15020"
+                host="speed.golddata.com.pa:8080"/>
+        <server url="http://speedserver.wipet.com:8080/speedtest/upload.php" lat="9.0000" lon="-79.5000"
+                name="Panama City" country="Panama" cc="PA" sponsor="Liberty Technologies" id="11924"
+                host="speedserver.wipet.com:8080"/>
+        <server url="http://speedtest.metrocom.com.pa:8080/speedtest/upload.php" lat="9.0000" lon="-79.5000"
+                name="Panama City" country="Panama" cc="PA" sponsor="Metrocom Panama" id="37761"
+                host="speedtest.metrocom.com.pa:8080"/>
+        <server url="http://speedtest.ovnicom.com:8080/speedtest/upload.php" lat="9.0000" lon="-79.5000"
+                name="Panama City" country="Panama" cc="PA" sponsor="OVNICOM" id="16914"
+                host="speedtest.ovnicom.com:8080"/>
+        <server url="http://speedtest.celero.network:8080/speedtest/upload.php" lat="9.0000" lon="-79.5000"
+                name="Panama" country="Panama" cc="PA" sponsor="Celero Networks Corp." id="35937"
+                host="speedtest.celero.network:8080"/>
+        <server url="http://speed2.transoceanet.com:8080/speedtest/upload.php" lat="9.3593" lon="-79.8999"
+                name="Colón City" country="Panama" cc="PA" sponsor="Trans Ocean Network" id="28489"
+                host="speed2.transoceanet.com:8080"/>
+        <server url="http://speed.conexionisp.net:8080/speedtest/upload.php" lat="7.9768" lon="-75.4172"
+                name="Montelibano" country="Colombia" cc="CO" sponsor="CONEXION ISP" id="61543"
+                host="speed.conexionisp.net:8080"/>
+        <server url="http://speedtest.qualitynet.com.co:8080/speedtest/upload.php" lat="7.9832" lon="-75.1982"
+                name="Caucasia" country="Colombia" cc="CO" sponsor="Qualitynet JM SAS Zomac" id="60074"
+                host="speedtest.qualitynet.com.co:8080"/>
+        <server url="http://speedtest.ct.co.cr:8080/speedtest/upload.php" lat="9.9408" lon="-84.0247" name="San José"
+                country="Costa Rica" cc="CR" sponsor="Liberty Costa Rica" id="14859" host="speedtest.ct.co.cr:8080"/>
+    </servers>
+</settings>
