@@ -86,21 +86,17 @@ def build_sample_schema(computer_name: str, check_results: Tuple[float, float, f
 
 if __name__ == '__main__':
     load_environment_variables('internet_speed_vars.txt')
+    total_runs = int(os.getenv('INTERNET_SPEED_RUNS'))
+    wait_minutes_max = int(os.getenv('INTERNET_SPEED_WAIT_MAX'))
+    machine_name = os.getenv('INTERNET_SPEED_MACHINE')
 
     sp_test = getting_best_server()
 
     o_folder = Path(__file__).parent.parent.parent / "output"
     ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    # json_file = o_folder / f"speed_test_{ts}.json"
-
     csv_file = o_folder / f"speed_test_{ts}.csv"
 
     observer = Observer(csv_file)
-    # print(o_folder, o_folder.exists())
-
-    total_runs = int(os.getenv('INTERNET_SPEED_RUNS'))
-    wait_minutes_max = int(os.getenv('INTERNET_SPEED_WAIT_MAX'))
-    machine_name = os.getenv('INTERNET_SPEED_MACHINE')
 
     for i in range(total_runs):
         sleep_seconds = int(60 * random.random() * wait_minutes_max)
