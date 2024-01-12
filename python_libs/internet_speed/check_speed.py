@@ -67,7 +67,7 @@ def getting_best_server():
     with Live(spinner, transient=True):
         speed_test = Speedtest()
 
-    servers = speed_test.get_servers(servers=['53427'])
+    servers = speed_test.get_servers()
     print(servers)
 
     spinner = Spinner('dots3', text=Text('Checking best server...', style='green'))
@@ -75,6 +75,9 @@ def getting_best_server():
         best = speed_test.best
     print(f'Sponsor: {best["sponsor"]}')
     print(f'Latency: {best["latency"]}')
+    print(f'Country: {best["country"]}')
+    print(f'Id     : {best["id"]}')
+    print('-' * 80)
 
     return speed_test
 
