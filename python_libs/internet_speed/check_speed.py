@@ -79,6 +79,18 @@ def getting_best_server():
     print(f'Id     : {best["id"]}')
     print('-' * 80)
 
+    config = speed_test.get_servers()
+    # FIXME Delete ------------------------------
+    var_name = 'config'
+    var_value = eval(var_name)
+    from pathlib import Path
+    import json
+    file = Path(__name__).parent / f'__{var_name}.json'
+    with open(file, 'w') as f:
+        json.dump(var_value, f, indent=4, default=str)
+    print(f'>>>> Saved file {file}')
+    # ---------------------------------------
+
     return speed_test
 
 
@@ -98,6 +110,7 @@ if __name__ == '__main__':
     machine_name = os.getenv('INTERNET_SPEED_MACHINE')
 
     sp_test = getting_best_server()
+    raise Exception('xxx')
 
     o_folder = Path(__file__).parent.parent.parent / "output"
     ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
