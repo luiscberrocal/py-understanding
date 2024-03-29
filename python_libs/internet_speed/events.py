@@ -24,8 +24,3 @@ class Observer:
                 writer = DictWriter(f, fieldnames=list(property_list[0].keys()))
                 writer.writerows(property_list)
 
-
-if __name__ == '__main__':
-    sleep_seconds = int(3 * 60)
-    for i in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds / 60} minutes..."):
-        time.sleep(1)  # Simulate work being done
