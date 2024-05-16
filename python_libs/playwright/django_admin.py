@@ -38,9 +38,11 @@ def create_super_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any
 
         users = page.locator('table#result_list tbody tr')
         print(users.count())
-        for user in users.all():
-            print(user.text_content())
+        existing_users = [username.text_content() for username in users.all()]
         for username in users_list:
+            if username in existing_users:
+                print(f'User {username} already exists')
+                continue
             user_pwd = generate_random_pwd()
             user_dict = {"username": username, "password": user_pwd, "admin_url": url}
             results.append(user_dict)
@@ -87,9 +89,11 @@ def create_cx_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any]]:
 
         users = page.locator('table#result_list tbody tr')
         print(users.count())
-        for user in users.all():
-            print(user.text_content())
+        existing_users = [username.text_content() for username in users.all()]
         for username in users_list:
+            if username in existing_users:
+                print(f'User {username} already exists')
+                continue
             user_pwd = generate_random_pwd()
             user_dict = {"username": username, "password": user_pwd, "admin_url": url}
             results.append(user_dict)
@@ -98,7 +102,8 @@ def create_cx_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any]]:
             page.locator('#id_is_staff').check()
             # page.locator('#id_is_superuser').check()
             page.locator('option[title="pj_django_payments | payment | Can view payment"]').dblclick()
-            page.locator('option[title="pj_django_payments | customer information | Can view customer information"]').dblclick()
+            page.locator(
+                'option[title="pj_django_payments | customer information | Can view customer information"]').dblclick()
 
             page.locator('input[type="submit"][name="_save"]').click()
 
@@ -107,16 +112,21 @@ def create_cx_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any]]:
         browser.close()
         print('Finished')
         return results
+
+
 # result_list > tbody > tr:nth-child(1) > th
 # content > h1
 if __name__ == '__main__':
     service_prefix = 'FLX'
-    admin_users_list = ['vijay.chinnakannan']
+    admin_users_list = ['vijay.chinnakannan',
+                        'jorge.alviarez',
+                        'elio.linarez',
+                        'arturo.chong']
     cx_user_list = ['amanda.amaral']
 
-    # results = create_super_users(service_prefix, users_list=admin_users_list)
+    results = create_super_users(service_prefix, users_list=admin_users_list)
 
-    results = create_cx_users(service_prefix, users_list=cx_user_list)
+    # results = create_cx_users(service_prefix, users_list=cx_user_list)
 
     output_folder = Path(__file__).parent.parent.parent / 'output'
     for user in results:
