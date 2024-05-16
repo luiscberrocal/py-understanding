@@ -1,6 +1,6 @@
 import os
 from time import sleep
-from typing import List
+from typing import List, Dict, Any
 
 from playwright.sync_api import sync_playwright
 
@@ -14,7 +14,9 @@ def generate_random_pwd():
                                   + string.digits + string.ascii_lowercase, k=64))
 
 
-def create_users(prefix: str, users_list: List[str]):
+def create_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any]]:
+
+    results = []
     load_environment_variables('playwright/django_admin_vars.txt')
     url = os.getenv(f'{prefix}_ADMIN_URL')
     username = os.getenv(f'{prefix}_ADMIN_USERNAME')
@@ -45,7 +47,7 @@ def create_users(prefix: str, users_list: List[str]):
             page.locator('#id_password2').fill(user_pwd)
             page.locator('input[type="submit"][name="_save"]').click()
             page.locator('#id_email').fill(f'{username}@payjoy.com')
-            page.locator('id_is_staff').click()
+            page.locator('#id_is_staff').check()
             page.locator('input[type="submit"][name="_save"]').click()
 
         # content-main > ul > li > a
