@@ -28,9 +28,7 @@ def create_super_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any
         page = browser.new_page()
         page.goto(url)
         print(page.title())
-        page.locator('#id_username').fill(username)
-        page.locator('#id_password').fill(pwd)
-        page.locator('.submit-row').click()
+        do_login(page, pwd, username)
 
         # Got to users
         page.locator('tr.model-user th a').click()
@@ -59,6 +57,12 @@ def create_super_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any
         return results
 
 
+def do_login(page, pwd, username):
+    page.locator('#id_username').fill(username)
+    page.locator('#id_password').fill(pwd)
+    page.locator('.submit-row').click()
+
+
 def create_user(page, user_pwd, username):
     page.locator('#content-main ul.object-tools li a.addlink').click()
     page.locator('#id_username').fill(username)
@@ -67,7 +71,7 @@ def create_user(page, user_pwd, username):
     page.locator('input[type="submit"][name="_save"]').click()
 
 
-def create_cx_users(prefix: str, users_list: List[str], environment:str ='PRODUCTION') -> List[Dict[str, Any]]:
+def create_cx_users(prefix: str, users_list: List[str], environment: str = 'PRODUCTION') -> List[Dict[str, Any]]:
     results = []
     if environment == 'PRODUCTION':
         load_environment_variables('playwright/django_admin_vars.txt')
@@ -83,9 +87,7 @@ def create_cx_users(prefix: str, users_list: List[str], environment:str ='PRODUC
         page = browser.new_page()
         page.goto(url)
         print(page.title())
-        page.locator('#id_username').fill(username)
-        page.locator('#id_password').fill(pwd)
-        page.locator('.submit-row').click()
+        do_login(page, pwd, username)
 
         # Got to users
         page.locator('tr.model-user th a').click()
@@ -121,16 +123,19 @@ def create_cx_users(prefix: str, users_list: List[str], environment:str ='PRODUC
 # content > h1
 if __name__ == '__main__':
     service_prefix = 'WUI'
-    admin_users_list = ['vijay.chinnakannan',
-                        'jorge.alviarez',
-                        'elio.linarez',
-                        'arturo.chong']
-    cx_user_list = ['amanda.amaral']
-    test_user_list = ['javier.mora',]
+    environment = 'PRODUCTION'
 
+    admin_users_list = [
+    #    'vijay.chinnakannan',
+    #    'jorge.alviarez',
+        'elio.linarez',
+        'arturo.chong'
+    ]
+    cx_user_list = ['amanda.amaral']
+    test_user_list = ['javier.mora', ]
     # results = create_super_users(service_prefix, users_list=admin_users_list)
 
-    results = create_cx_users(service_prefix, users_list=test_user_list, environment='STAGING')
+    results = create_cx_users(service_prefix, users_list=test_user_list, environment=environment)
 
     output_folder = Path(__file__).parent.parent.parent / 'output'
     for user in results:
