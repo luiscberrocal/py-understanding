@@ -67,9 +67,13 @@ def create_user(page, user_pwd, username):
     page.locator('input[type="submit"][name="_save"]').click()
 
 
-def create_cx_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any]]:
+def create_cx_users(prefix: str, users_list: List[str], environment:str ='PRODUCTION') -> List[Dict[str, Any]]:
     results = []
-    load_environment_variables('playwright/django_admin_vars.txt')
+    if environment == 'PRODUCTION':
+        load_environment_variables('playwright/django_admin_vars.txt')
+    else:
+        load_environment_variables('playwright/django_admin_staging_vars.txt')
+
     url = os.getenv(f'{prefix}_ADMIN_URL')
     username = os.getenv(f'{prefix}_ADMIN_USERNAME')
     pwd = os.getenv(f'{prefix}_ADMIN_PASSWORD')
@@ -100,10 +104,9 @@ def create_cx_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any]]:
             create_user(page, user_pwd, username)
             page.locator('#id_email').fill(f'{username}@payjoy.com')
             page.locator('#id_is_staff').check()
-            # page.locator('#id_is_superuser').check()
-            page.locator('option[title="pj_django_payments | payment | Can view payment"]').dblclick()
-            page.locator(
-                'option[title="pj_django_payments | customer information | Can view customer information"]').dblclick()
+            # page.locator('option[title="pj_django_payments | payment | Can view payment"]').dblclick()
+            # page.locator(
+            #     'option[title="pj_django_payments | customer information | Can view customer information"]').dblclick()
 
             page.locator('input[type="submit"][name="_save"]').click()
 
@@ -117,16 +120,17 @@ def create_cx_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any]]:
 # result_list > tbody > tr:nth-child(1) > th
 # content > h1
 if __name__ == '__main__':
-    service_prefix = 'FLX'
+    service_prefix = 'WUI'
     admin_users_list = ['vijay.chinnakannan',
                         'jorge.alviarez',
                         'elio.linarez',
                         'arturo.chong']
     cx_user_list = ['amanda.amaral']
+    test_user_list = ['javier.mora',]
 
-    results = create_super_users(service_prefix, users_list=admin_users_list)
+    # results = create_super_users(service_prefix, users_list=admin_users_list)
 
-    # results = create_cx_users(service_prefix, users_list=cx_user_list)
+    results = create_cx_users(service_prefix, users_list=test_user_list, environment='STAGING')
 
     output_folder = Path(__file__).parent.parent.parent / 'output'
     for user in results:
