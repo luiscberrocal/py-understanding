@@ -10,10 +10,11 @@ with sync_playwright() as p:
     page.locator('#wt-cli-accept-all-btn').click()
     page.get_by_role('button', name='Banca en línea').click()
     sleep(1)
-    login = page.locator('#txtLoginD') # .fill('ddddd')
+    # login = page.locator('#txtLoginD') # .fill('ddddd')
+    login = page.wait_for_selector('#txtLoginD', state='attached') # .fill('ddddd')
     login.fill('5555')
     print(login)
-    sleep(5)
+    sleep(1)
     browser.close()
     print('Finished')
 
