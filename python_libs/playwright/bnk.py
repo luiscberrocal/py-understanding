@@ -11,7 +11,7 @@ with sync_playwright() as p:
     page.get_by_role('button', name='Banca en línea').click()
     sleep(1)
     # login = page.locator('#txtLoginD') # .fill('ddddd')
-    login = page.wait_for_selector('#txtLoginD', state='attached') # .fill('ddddd')
+    login = page.wait_for_selector('#txtLoginD', state='visible') # .fill('ddddd')
     login.fill('5555')
     print(login)
     sleep(1)
