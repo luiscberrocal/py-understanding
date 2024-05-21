@@ -22,7 +22,7 @@ def check_admin(config_scheme: AdminConfigSchema):
         browser.close()
 
 
-def do_get_users(page) -> List[str]:
+def do_get_users2(page) -> List[str]:
     page.locator('tr.model-user th a').click()
     page.locator('#content > h1').click()
 
@@ -31,26 +31,20 @@ def do_get_users(page) -> List[str]:
     return existing_users
 
 
-def do_get_users2(page) -> List[Dict[str, str]]:
+def do_get_users(page) -> List[Dict[str, str]]:
     page.locator('tr.model-user th a').click()
     page.locator('#content > h1').click()
 
     rows = page.locator('table#result_list tbody tr')
-    # print(rows.inner_text())
     users_data = []
     for row in rows.all():
-        columns = row.locator('td')
-        print("columns count", columns.count())
+        columns = row.locator('th')
         for column in columns.all():
-            print("x", column.inner_text())
             users_data.append(column.inner_text())
-        # user_data = [column.inner_text() for column in columns.all()]
-        # users_data.append(user_data)
     return users_data
 
-
 if __name__ == '__main__':
-    service_key = "MPI" # 'WOMPI'
+    service_key = None
     if service_key:
         admin_config_schema = get_configuration(service_key, 'production')
         check_admin(admin_config_schema)
