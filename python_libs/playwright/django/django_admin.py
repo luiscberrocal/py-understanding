@@ -7,6 +7,7 @@ from typing import List, Dict, Any
 from playwright.sync_api import sync_playwright
 
 from python_libs.internet_speed.check_speed import load_environment_variables
+from python_libs.playwright.django.schemas import AdminConfigSchema
 
 
 def generate_random_pwd():
@@ -28,7 +29,7 @@ def create_super_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any
         page = browser.new_page()
         page.goto(url)
         print(page.title())
-        do_login(page, pwd, username)
+        do_login_deprecated(page, pwd, username)
 
         # Got to users
         page.locator('tr.model-user th a').click()
@@ -57,9 +58,15 @@ def create_super_users(prefix: str, users_list: List[str]) -> List[Dict[str, Any
         return results
 
 
-def do_login(page, pwd, username):
+def do_login_deprecated(page, pwd, username):
     page.locator('#id_username').fill(username)
     page.locator('#id_password').fill(pwd)
+    page.locator('.submit-row').click()
+
+
+def do_login(page, admin_config: AdminConfigSchema):
+    page.locator('#id_username').fill(admin_config.username)
+    page.locator('#id_password').fill(admin_config.password)
     page.locator('.submit-row').click()
 
 
@@ -87,7 +94,7 @@ def create_cx_users(prefix: str, users_list: List[str], environment: str = 'PROD
         page = browser.new_page()
         page.goto(url)
         print(page.title())
-        do_login(page, pwd, username)
+        do_login_deprecated(page, pwd, username)
 
         # Got to users
         page.locator('tr.model-user th a').click()
@@ -126,8 +133,8 @@ if __name__ == '__main__':
     environment = 'PRODUCTION'
 
     admin_users_list = [
-    #    'vijay.chinnakannan',
-    #    'jorge.alviarez',
+        #    'vijay.chinnakannan',
+        #    'jorge.alviarez',
         'elio.linarez',
         'arturo.chong'
     ]
