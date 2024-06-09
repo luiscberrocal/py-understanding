@@ -1,0 +1,4 @@
+
+
+class EncryptionError(Exception):
+    pass
