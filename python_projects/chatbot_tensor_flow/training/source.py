@@ -55,10 +55,16 @@ for document in documents:
     training.append([bag, output_row])
 
 random.shuffle(training)
-training = np.array(training)
+# training = np.array(training)
+#
+# train_x = list(training[:, 0])
+# train_y = list(training[:, 1])
 
-train_x = list(training[:, 0])
-train_y = list(training[:, 1])
+training = np.array([t[0] for t in training])
+output = np.array([t[1] for t in training])
+train_x = list(training)
+train_y = list(output)
+
 
 model = Sequential()
 model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu'))
