@@ -85,6 +85,7 @@ def training_data2(classes: List[str], documents: List[Tuple[List[str], str]], w
 def training_data(classes: List[str], documents: List[Tuple[List[str], str]], words: List[str]):
     lemmatizer = WordNetLemmatizer()
     training = []
+    output = []
     output_empty = [0] * len(classes)
     for doc in documents:
         bag = []
@@ -92,18 +93,16 @@ def training_data(classes: List[str], documents: List[Tuple[List[str], str]], wo
         pattern_words = [lemmatizer.lemmatize(word) for word in pattern_words if word not in settings.IGNORE_WORDS]
         for w in words:
             bag.append(1) if w in pattern_words else bag.append(0)
-
-        # Pad the bag list with zeros
-        while len(bag) < len(output_empty):
-            bag.append(0)
-
         output_row = list(output_empty)
         output_row[classes.index(doc[1])] = 1
-        training.append([bag, output_row])
+        training.append(bag)
+        output.append(output_row)
     random.shuffle(training)
+    random.shuffle(output)
     training = np.array(training)
-    train_x = list(training[:, 0])
-    train_y = list(training[:, 1])
+    output = np.array(output)
+    train_x = list(training)
+    train_y = list(output)
     return train_x, train_y
 
 if __name__ == '__main__':
