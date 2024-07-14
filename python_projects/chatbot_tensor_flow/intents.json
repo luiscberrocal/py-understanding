@@ -68,16 +68,22 @@
       "context_set": ""
     },
     {
-      "tag": "flask",
+      "tag": "gun_inventory",
       "patterns": [
-        "What is Flask?",
-        "Do you know about Flask?",
-        "Can you tell me something about Flask?",
-        "Explain Flask to me!",
-        "I don't know about Flask, can you tell me?"
+        "What gun models do you have?",
+        "What 9mm pistol models do you have?",
+        "What 10mm pistol models do you sell?",
+        "What is the price of a Sig Sauer P320?",
+        "What is the price of a Glock 19?",
+        "Do you sell Glocks?",
+        "What brands for shotguns do you sell?",
+        "Do you have 9mm pistols?",
+        "Do you sell ammunition?",
+        "How many bullets does a Glock 19 hold?",
+        "How much does a Smith and Wesson M&P Shield cost?"
       ],
       "responses": [
-        "Flask is a Python web development framework, which is very simple and minimalistic."
+        "We have a variety of gun models, including Glocks, shotguns, 9mm pistols, and ammunition."
       ],
       "context_set": ""
     }

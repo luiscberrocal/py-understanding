@@ -127,7 +127,7 @@ def build_model(train_x: List[np.ndarray], train_y: List[np.ndarray]) -> Sequent
 if __name__ == '__main__':
     f = settings.APP_FOLDER / 'intents.json'
     wd = prep_word_data(f)
-    ft = "json"
+    ft = "pickle"
     wd_files = save_data(settings.MODEL_FOLDER, wd, file_type=ft)
     for wdf in wd_files:
         print(f'Saved: {wdf}')
