@@ -3,14 +3,15 @@
     {
       "tag": "greeting",
       "patterns": [
-        "Hi",
-        "How are you",
+        "Hi:",
+        "How are you. Are you good?",
         "Is anyone there?",
         "Hello",
         "Good day",
-        "Whats up",
+        "Whats up!!",
         "Hey",
-        "greetings"
+        "greetings",
+        "`Xopa`"
       ],
       "responses": [
         "Hello!",
@@ -72,7 +73,8 @@
         "What is Flask?",
         "Do you know about Flask?",
         "Can you tell me something about Flask?",
-        "Explain Flask to me!"
+        "Explain Flask to me!",
+        "I don't know about Flask, can you tell me?"
       ],
       "responses": [
         "Flask is a Python web development framework, which is very simple and minimalistic."
