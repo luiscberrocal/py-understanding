@@ -1,3 +1,4 @@
+import json
 import pickle
 from pathlib import Path
 from typing import Any, Dict, List
@@ -40,18 +41,25 @@ def prep_word_data(intent_file: Path) -> Dict[str, List[Any]]:
     return results
 
 
-def save_data(folder: Path, data: Dict[str, Any]) -> List[Path]:
+def save_data(folder: Path, data: Dict[str, Any], format: str = "pickle") -> List[Path]:
     files = []
+    if format == "pickle":
+        action = "wb"
+    elif format == "json":
+        action = "w"
+    else:
+        raise ValueError(f'Unknown format: {format}')
     for key, value in data.items():
-        lem_file = folder / f'{key}.pickle'
-        with open(lem_file, 'wb') as f:
-            pickle.dump(value, f)
+        lem_file = folder / f'{key}.{format}'
+        with open(lem_file, action) as f:
+            eval(f'{format}.dump(value, f)')
         files.append(lem_file)
     return files
+
 
 if __name__ == '__main__':
     f = settings.APP_FOLDER / 'intents.json'
     wd = prep_word_data(f)
-    wd_files = save_data(settings.MODEL_FOLDER, wd)
+    wd_files = save_data(settings.MODEL_FOLDER, wd, format='json')
     for wdf in wd_files:
         print(f'Saved: {wdf}')
