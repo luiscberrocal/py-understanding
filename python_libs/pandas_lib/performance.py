@@ -18,7 +18,7 @@ csv = Path(__file__).parent / 'data' / 'hn.csv'
 setup_code = """
 from __main__ import regular_read_csv, py_arrow_read_csv 
 from pathlib import Path
-csv = Path(__file__).home()  / 'PycharmProjects/py-understanding/python_libs/pandas/data/hn.csv'"""
+csv = Path(__file__).home()  / 'PycharmProjects/py-understanding/python_libs/pandas_lib/data/hn.csv'"""
 
 results1 = timeit.timeit(stmt="regular_read_csv(csv)",
                         setup=setup_code,
