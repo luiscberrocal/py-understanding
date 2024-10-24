@@ -2,7 +2,7 @@ import timeit
 from pathlib import Path
 
 import pandas as pd
-
+import polars as pl
 
 def regular_read_csv(csv_file: Path) -> pd.DataFrame:
     df = pd.read_csv(csv_file)
