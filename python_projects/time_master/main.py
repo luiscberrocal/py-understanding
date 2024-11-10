@@ -32,32 +32,6 @@ def fetch_taskwarrior_data():
         sys.exit(1)
 
 
-def parse_time_entries(timew_data, task_data):
-    tasks = {task["uuid"]: task for task in task_data}
-    entries = []
-    for interval in timew_data:
-        tags = interval.get("tags", [])
-        task_uuids = [tag[5:] for tag in tags if tag.startswith("task:")]
-        for uuid in task_uuids:
-            task = tasks.get(uuid)
-            if task:
-                start_time = datetime.fromisoformat(interval["start"])
-                end_time = datetime.fromisoformat(
-                    interval.get("end", datetime.now().isoformat())
-                )
-                duration = end_time - start_time
-                entries.append(
-                    {
-                        "Task UUID": uuid,
-                        "Description": task.get("description", "No Description"),
-                        "Start": start_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        "End": end_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        "Duration (HH:MM:SS)": str(duration),
-                    }
-                )
-    return entries
-
-
 def convert_to_datetime(date_str):
     try:
         return datetime.strptime(date_str, "%Y%m%dT%H%M%SZ")
@@ -69,20 +43,16 @@ def convert_to_datetime(date_str):
 
 
 def parse_task_entries(
-    *, time_data: list[dict[str, Any]], task_data: list[dict[str, Any]]
+        *, time_data: list[dict[str, Any]], task_data: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
     time_data_with_tasks = []
     for task in task_data:
         for interval in time_data:
-            # print(interval)
             try:
                 if (
-                    task["project"] in interval.get("tags", [])
-                    and interval.get("duration") is None
+                        task["project"] in interval.get("tags", [])
+                        and interval.get("duration") is None
                 ):
-                    print(
-                        f">>>> Processing for project {task['project']} and duration {interval.get('duration')}"
-                    )
                     start_time = convert_to_datetime(interval["start"])
                     if interval.get("end"):
                         end_time = convert_to_datetime(interval["end"])
@@ -111,7 +81,7 @@ def parse_task_entries(
 
 
 def write_csv(
-    time_entries: list[dict[str, Any]], filename: str = "timew_taskw_report.csv"
+        time_entries: list[dict[str, Any]], filename: str = "timew_taskw_report.csv"
 ):
     fieldnames = ["Task UUID", "Description", "Start", "End", "Duration (HH:MM:SS)"]
     fieldnames = time_entries[0].keys()
@@ -131,9 +101,10 @@ def main():
     timew_data = fetch_timewarrior_data()
     task_data = fetch_taskwarrior_data()
     entries = parse_task_entries(time_data=timew_data, task_data=task_data)
-    # entries = parse_time_entries(timew_data, task_data)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    report_file = f"timew_taskw_report_{timestamp}.csv"
     if entries:
-        write_csv(entries)
+        write_csv(entries, filename=report_file)
     else:
         print("No matching entries found between TimeWarrior and TaskWarrior.")
 
