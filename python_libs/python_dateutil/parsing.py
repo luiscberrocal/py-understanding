@@ -9,18 +9,18 @@ def parse_jira_date(date_str: str) -> datetime:
 
 
 def format_date(value: str):
-    date_format = '%d/%b/%Y %I:%M %p'
+    date_format = "%d/%b/%Y %I:%M %p"
     try:
         dt = datetime.strptime(value, date_format)
         return dt
     except Exception as e:
-        print(f'{value}')
-        print(f'{e}')
+        print(f"{value}")
+        print(f"{e}")
         raise e
 
 
-if __name__ == '__main__':
-    jira_date_str = '25/Jul/23 2:23 PM'
+if __name__ == "__main__":
+    jira_date_str = "25/Jul/23 2:23 PM"
     jira_date = parse_jira_date(jira_date_str)
     print(jira_date)
 

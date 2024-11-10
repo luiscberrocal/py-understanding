@@ -31,13 +31,13 @@ def bytes_to_mb(size_bytes: float) -> float:
 def check(speed_test: Speedtest, verbose: bool) -> Tuple[float, float, float]:
     start_time = time.time()
 
-    spinner = Spinner('dots3', text=Text('Checking download speed...', style='green'))
+    spinner = Spinner("dots3", text=Text("Checking download speed...", style="green"))
     with Live(spinner, transient=True):
         download_speed = bytes_to_mb(speed_test.download())
     if verbose:
         print(f"Your Download speed is {download_speed:.2f}")
 
-    spinner = Spinner('dots3', text=Text('Checking upload speed...', style='green'))
+    spinner = Spinner("dots3", text=Text("Checking upload speed...", style="green"))
     with Live(spinner, transient=True):
         upload_speed = bytes_to_mb(speed_test.upload())
     if verbose:
@@ -51,7 +51,7 @@ def load_environment_variables(environment_filename: str):
     from pathlib import Path
 
     def find_envs_folder(current_dir: Path):
-        env_folder = current_dir / '.envs'
+        env_folder = current_dir / ".envs"
         if env_folder.exists():
             return env_folder
         else:
@@ -63,54 +63,63 @@ def load_environment_variables(environment_filename: str):
 
 
 def getting_best_server():
-    spinner = Spinner('dots3', text=Text('Instantiating test...', style='green'))
+    spinner = Spinner("dots3", text=Text("Instantiating test...", style="green"))
     with Live(spinner, transient=True):
         speed_test = Speedtest()
 
     servers = speed_test.get_servers()
     print(servers)
 
-    spinner = Spinner('dots3', text=Text('Checking best server...', style='green'))
+    spinner = Spinner("dots3", text=Text("Checking best server...", style="green"))
     with Live(spinner, transient=True):
         best = speed_test.best
     print(f'Sponsor: {best["sponsor"]}')
     print(f'Latency: {best["latency"]}')
     print(f'Country: {best["country"]}')
     print(f'Id     : {best["id"]}')
-    print('-' * 80)
+    print("-" * 80)
 
     config = speed_test.get_servers()
     # FIXME Delete ------------------------------
-    var_name = 'config'
+    var_name = "config"
     var_value = eval(var_name)
     from pathlib import Path
     import json
-    file = Path(__name__).parent / f'__{var_name}.json'
-    with open(file, 'w') as f:
+
+    file = Path(__name__).parent / f"__{var_name}.json"
+    with open(file, "w") as f:
         json.dump(var_value, f, indent=4, default=str)
-    print(f'>>>> Saved file {file}')
+    print(f">>>> Saved file {file}")
     # ---------------------------------------
 
     return speed_test
 
 
-def build_sample_schema(computer_name: str, check_results: Tuple[float, float, float]) -> SpeedSample:
+def build_sample_schema(
+    computer_name: str, check_results: Tuple[float, float, float]
+) -> SpeedSample:
     ssid = get_wifi_ssid()
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    speed_result = {"machine": computer_name, "download": check_results[0], "upload": check_results[1],
-                    "elapsed_time": check_results[2], "date": now, "ssid": ssid}
+    speed_result = {
+        "machine": computer_name,
+        "download": check_results[0],
+        "upload": check_results[1],
+        "elapsed_time": check_results[2],
+        "date": now,
+        "ssid": ssid,
+    }
     sample = SpeedSample(**speed_result)
     return sample
 
 
-if __name__ == '__main__':
-    load_environment_variables('internet_speed_vars.txt')
-    total_runs = int(os.getenv('INTERNET_SPEED_RUNS'))
-    wait_minutes_max = int(os.getenv('INTERNET_SPEED_WAIT_MAX'))
-    machine_name = os.getenv('INTERNET_SPEED_MACHINE')
+if __name__ == "__main__":
+    load_environment_variables("internet_speed_vars.txt")
+    total_runs = int(os.getenv("INTERNET_SPEED_RUNS"))
+    wait_minutes_max = int(os.getenv("INTERNET_SPEED_WAIT_MAX"))
+    machine_name = os.getenv("INTERNET_SPEED_MACHINE")
 
     sp_test = getting_best_server()
-    raise Exception('xxx')
+    raise Exception("xxx")
 
     o_folder = Path(__file__).parent.parent.parent / "output"
     ts = datetime.now().strftime("%Y-%m-%d_%H%M%S")
@@ -124,12 +133,17 @@ if __name__ == '__main__':
             results = check(speed_test=sp_test, verbose=True)
             print(f"Test {i + 1} took: {results[2]:.2f} seconds")
 
-            speed_sample = build_sample_schema(computer_name=machine_name, check_results=results)
+            speed_sample = build_sample_schema(
+                computer_name=machine_name, check_results=results
+            )
             observer.update(speed_sample)
-            print('-' * 80)
-            for _ in track(range(sleep_seconds), description=f"Sleeping for {sleep_seconds / 60:.2f} minutes...",
-                           transient=True):
+            print("-" * 80)
+            for _ in track(
+                range(sleep_seconds),
+                description=f"Sleeping for {sleep_seconds / 60:.2f} minutes...",
+                transient=True,
+            ):
                 time.sleep(1)  # Simulate work being done
         except SpeedtestBestServerFailure as e:
-            click.secho(f'Skipped {i} {e}', fg='red')
-    print(f'Finished')
+            click.secho(f"Skipped {i} {e}", fg="red")
+    print(f"Finished")

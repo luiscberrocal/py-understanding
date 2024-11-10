@@ -10,7 +10,7 @@ def get_configuration(service_key: str, environment: str) -> AdminConfigSchema:
     with open(configuration_file) as json_file:
         configuration = json.load(json_file)
     config_data = configuration[service_key]
-    config_data['service_key'] = service_key
+    config_data["service_key"] = service_key
     admin_config = AdminConfigSchema(**config_data)
     return admin_config
 
@@ -21,13 +21,13 @@ def get_all_configurations(environment: str) -> List[AdminConfigSchema]:
     with open(configuration_file) as json_file:
         configuration = json.load(json_file)
     for key, value in configuration.items():
-        value['service_key'] = key
+        value["service_key"] = key
         admin_config = AdminConfigSchema(**value)
         configurations.append(admin_config)
 
     return configurations
 
 
-if __name__ == '__main__':
-    config = get_configuration('DLOC', 'production')
+if __name__ == "__main__":
+    config = get_configuration("DLOC", "production")
     print(config)

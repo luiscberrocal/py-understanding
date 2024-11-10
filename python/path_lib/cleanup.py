@@ -5,8 +5,8 @@ from pathlib import Path
 
 
 def format_size(size: float) -> str:
-    mb = size / 1024.00 ** 2
-    return f'{mb:.2f} MB'
+    mb = size / 1024.00**2
+    return f"{mb:.2f} MB"
 
 
 def clean(folder: Path, glob_pattern: str, max_age: int = 0):
@@ -14,19 +14,23 @@ def clean(folder: Path, glob_pattern: str, max_age: int = 0):
     files_to_delete = []
     for i, file in enumerate(files, 1):
         creation_time = file.stat().st_ctime
-        age_days = (datetime.now() - datetime.fromtimestamp(creation_time)).total_seconds() / 3600.0 / 24.0
+        age_days = (
+            (datetime.now() - datetime.fromtimestamp(creation_time)).total_seconds()
+            / 3600.0
+            / 24.0
+        )
         if age_days >= max_age:
             size = format_size(file.stat().st_size)
-            content = f'{i} {file} size: {size} age: {age_days:.1f} days old'
+            content = f"{i} {file} size: {size} age: {age_days:.1f} days old"
             print(content)
-            action = input('Action [D]elete, [S]top [N]one')
-            if action.upper() == 'D':
+            action = input("Action [D]elete, [S]top [N]one")
+            if action.upper() == "D":
                 file.unlink()
-            elif action.upper() == 'S':
+            elif action.upper() == "S":
                 sys.exit()
 
 
-if __name__ == '__main__':
-    downloads = Path.home() / 'Downloads'
-    g_pattern = '*.zip'
-    clean(folder=downloads, glob_pattern=g_pattern) #, max_age=120)
+if __name__ == "__main__":
+    downloads = Path.home() / "Downloads"
+    g_pattern = "*.zip"
+    clean(folder=downloads, glob_pattern=g_pattern)  # , max_age=120)

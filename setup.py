@@ -11,31 +11,31 @@ except ImportError:
 
 
 setup(
-    name='python_libs',
-    version='0.13.0',
+    name="python_libs",
+    version="0.13.0",
     description="""Testt""",
     long_description="Long description",
-    author='Luis Carlos Berrocal',
-    author_email='luis.berrocal.1942@gmail.com',
-    url='https://github.com/luiscberrocal/py-understanding',
+    author="Luis Carlos Berrocal",
+    author_email="luis.berrocal.1942@gmail.com",
+    url="https://github.com/luiscberrocal/py-understanding",
     packages=[
-        'python_libs',
+        "python_libs",
     ],
     include_package_data=True,
     # install_requires=requirements,
     zip_safe=False,
-    keywords='python_libs',
+    keywords="python_libs",
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Not open source',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10'
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Not open source",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     entry_points={
-        'console_scripts': [
-            'py-rich=pj_kafka_wrapper.cli.cli_cmd:main',
+        "console_scripts": [
+            "py-rich=pj_kafka_wrapper.cli.cli_cmd:main",
         ],
     },
 )

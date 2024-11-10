@@ -12,7 +12,7 @@ def parse_docker_file(file_path) -> DockerfileParser:
     :return: List of instructions.
     """
     content = None
-    with open(file_path, 'r') as f:
+    with open(file_path, "r") as f:
         content = f.read()
     dfp = DockerfileParser()
     dfp.content = content
@@ -20,17 +20,17 @@ def parse_docker_file(file_path) -> DockerfileParser:
 
 
 def main():
-    file_path = 'Dockerfile'
+    file_path = "Dockerfile"
     dfp: DockerfileParser = parse_docker_file(file_path)
-    print('*' * 120)
+    print("*" * 120)
     structure: List[Dict[str, Any]] = dfp.structure
     pprint(structure)
-    print('*' * 60, 'JSON', '*' * 60)
+    print("*" * 60, "JSON", "*" * 60)
     json_str: str = dfp.json
     pprint(json_str)
-    print('*' * 120)
+    print("*" * 120)
     pprint(dfp.labels)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

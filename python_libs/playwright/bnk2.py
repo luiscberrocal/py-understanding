@@ -23,8 +23,6 @@ def run(playwright: Playwright) -> None:
     browser.close()
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     with sync_playwright() as playwright:
         run(playwright)

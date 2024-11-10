@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def convert_datetime_to_iso_8601_with_z_suffix(dt: datetime) -> str:
-    return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+    return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 class PinnedRequirement(BaseModel):
@@ -29,15 +29,13 @@ class PythonRequirementPy(BaseModel):
 
     def to_req_line(self) -> str:
         if self.home_page is None:
-            line = f'{self.name}=={self.approved_version}'
+            line = f"{self.name}=={self.approved_version}"
         else:
-            line = f'{self.name}=={self.approved_version} # {self.home_page}'
+            line = f"{self.name}=={self.approved_version} # {self.home_page}"
         return line
 
     class Config:
-        json_encoders = {
-            datetime: convert_datetime_to_iso_8601_with_z_suffix
-        }
+        json_encoders = {datetime: convert_datetime_to_iso_8601_with_z_suffix}
 
     @property
     def latest_version_info(self):

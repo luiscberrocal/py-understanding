@@ -13,7 +13,7 @@ from python_projects.chatbot_tensor_flow import settings
 
 
 def get_intents(file_path: Path) -> Dict[str, Any]:
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         return json.load(file)
 
 
@@ -27,7 +27,7 @@ def clean_up_sentence(sentence: str) -> List[str]:
 
 
 def bag_of_words(sentence: str, source_file: Path):
-    with open(source_file, 'rb') as file:
+    with open(source_file, "rb") as file:
         words = pickle.load(file)
 
     sentence_words = clean_up_sentence(sentence)
@@ -40,7 +40,7 @@ def bag_of_words(sentence: str, source_file: Path):
 
 
 def predict_class(sentence, model_file: Path, classes_file: Path, words_file: Path):
-    with open(classes_file, 'rb') as file:
+    with open(classes_file, "rb") as file:
         classes = pickle.load(file)
 
     model = load_model(model_file)
@@ -55,23 +55,21 @@ def predict_class(sentence, model_file: Path, classes_file: Path, words_file: Pa
     return_list = []
 
     for r in results:
-        return_list.append({'intent': classes[r[0]], 'probability': str(r[1])})
+        return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
 
     return return_list
 
 
-
-
 def main():
-    model_file = settings.MODEL_FOLDER / 'chatbot_model.keras'
-    classes_file = settings.MODEL_FOLDER / 'classes.pickle'
-    words_file = settings.MODEL_FOLDER / 'words.pickle'
-    intents_file = settings.APP_FOLDER / 'intents.json'
+    model_file = settings.MODEL_FOLDER / "chatbot_model.keras"
+    classes_file = settings.MODEL_FOLDER / "classes.pickle"
+    words_file = settings.MODEL_FOLDER / "words.pickle"
+    intents_file = settings.APP_FOLDER / "intents.json"
 
     sentence = "How many gun models do you sell?"
     intents = predict_class(sentence, model_file, classes_file, words_file)
     print(intents)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

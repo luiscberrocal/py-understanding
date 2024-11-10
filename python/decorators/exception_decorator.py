@@ -18,6 +18,7 @@ def decorator_function_with_arguments(arg1, arg2, arg3):
 
 class WrapperException(Exception):
     """Wrapper exception for the Felix Pago SDK."""
+
     pass
 
 
@@ -25,6 +26,7 @@ def exception_decorator(**kwargs):
     def wrap(f):
         print("Inside wrap()")
         try:
+
             def wrapped_f(*args):
                 print(f"Inside wrapped_f() {f.__name__}")
                 print("Decorator arguments:", args, kwargs)
@@ -43,7 +45,7 @@ def exception_decorator(**kwargs):
 
 @decorator_function_with_arguments("hello", "world", 42)
 def sayHello(a1, a2, a3, a4):
-    print('sayHello arguments:', a1, a2, a3, a4)
+    print("sayHello arguments:", a1, a2, a3, a4)
 
 
 @exception_decorator(process="calling the function")
@@ -54,16 +56,17 @@ def process_request():
     except WrapperException as e:
         print(f"Wrapper exception: {e}")
 
+
 def main():
     print("After decoration")
 
     print("Preparing to call sayHello()")
     sayHello("say", "hello", "argument", "list")
-    print('-' * 100)
+    print("-" * 100)
     print("after first sayHello() call")
     sayHello("a", "different", "set of", "arguments")
     print("after second sayHello() call")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     process_request()

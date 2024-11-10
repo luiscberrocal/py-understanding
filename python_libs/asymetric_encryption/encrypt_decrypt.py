@@ -9,7 +9,11 @@ from .exceptions import EncryptionError
 
 
 def create_or_read_keys(
-        *, private_folder: Path, public_folder: Path, length: int = 1024, key_file_prefix: str = ""
+    *,
+    private_folder: Path,
+    public_folder: Path,
+    length: int = 1024,
+    key_file_prefix: str = "",
 ) -> Tuple[rsa.PublicKey, rsa.PrivateKey, bool]:
     """Create or read the public and private keys for encryption and decryption.
 
@@ -36,8 +40,10 @@ def create_or_read_keys(
         with open(private_key_file, "wb") as f:
             f.write(private_key.save_pkcs1("PEM"))
     else:
-        raise EncryptionError(f"Public and private keys must be created or read together. "
-                              f"{public_key_file=} {private_key_file=}")
+        raise EncryptionError(
+            f"Public and private keys must be created or read together. "
+            f"{public_key_file=} {private_key_file=}"
+        )
     return public_key, private_key, created
 
 
@@ -77,7 +83,9 @@ def decrypt_environment_file(*, source_file: Path, private_key: rsa.PrivateKey) 
     return rsa.decrypt(data, priv_key=private_key).decode("utf-8")
 
 
-def load_encrypted_environment_file(*, source_file: Path, private_key: rsa.PrivateKey) -> None:
+def load_encrypted_environment_file(
+    *, source_file: Path, private_key: rsa.PrivateKey
+) -> None:
     """
     Load the encrypted environment file to environment variables.
     Args:

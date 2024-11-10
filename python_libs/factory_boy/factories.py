@@ -10,12 +10,13 @@ from python_libs.factory_boy.schemas import Customer, Account, Transaction
 
 # FactoryBoy Factories:
 
+
 class CustomerFactory(Factory):
     class Meta:
         model = Customer
 
-    name = Sequence(lambda n: f'Customer {n}')
-    national_id = Sequence(lambda n: f'ID{n}')
+    name = Sequence(lambda n: f"Customer {n}")
+    national_id = Sequence(lambda n: f"ID{n}")
     country = "USA"
 
 
@@ -24,7 +25,7 @@ class AccountFactory(Factory):
         model = Account
 
     customer = SubFactory(CustomerFactory)
-    account_number = Sequence(lambda n: f'ACC-{n:05}')
+    account_number = Sequence(lambda n: f"ACC-{n:05}")
 
 
 class TransactionFactory(Factory):
@@ -36,6 +37,6 @@ class TransactionFactory(Factory):
     date = LazyFunction(datetime.now)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     transaction = TransactionFactory.create()
     assert transaction.account.customer.name

@@ -15,13 +15,14 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Dropout
 from tensorflow.keras.optimizers import SGD
 
+
 def install_nltk():
-    nltk.download('punkt')
-    nltk.download('wordnet')
+    nltk.download("punkt")
+    nltk.download("wordnet")
 
 
 def prep_word_data(intent_file: Path) -> Dict[str, List[Any]]:
-    tokenizer = RegexpTokenizer(r'\w+')
+    tokenizer = RegexpTokenizer(r"\w+")
     # tokenizer = WhitespaceTokenizer()
     words = []
     classes = []
@@ -38,16 +39,20 @@ def prep_word_data(intent_file: Path) -> Dict[str, List[Any]]:
                 classes.append(intent["tag"])
 
     lemmatizer = WordNetLemmatizer()
-    words = [lemmatizer.lemmatize(w.lower()) for w in words if w not in settings.IGNORE_WORDS]
+    words = [
+        lemmatizer.lemmatize(w.lower()) for w in words if w not in settings.IGNORE_WORDS
+    ]
     results = {
         "words": sorted(set(words)),
         "classes": sorted(set(classes)),
-        "documents": documents
+        "documents": documents,
     }
     return results
 
 
-def save_data(folder: Path, data: Dict[str, Any], file_type: str = "pickle") -> List[Path]:
+def save_data(
+    folder: Path, data: Dict[str, Any], file_type: str = "pickle"
+) -> List[Path]:
     files = []
     if file_type == "pickle":
         action = "wb"
@@ -56,23 +61,29 @@ def save_data(folder: Path, data: Dict[str, Any], file_type: str = "pickle") -> 
         dump = json.dump
         action = "w"
     else:
-        raise ValueError(f'Unknown format: {file_type}')
+        raise ValueError(f"Unknown format: {file_type}")
     for key, value in data.items():
-        lem_file = folder / f'{key}.{file_type}'
+        lem_file = folder / f"{key}.{file_type}"
         with open(lem_file, action) as f:  # noqa
             dump(value, f)
         files.append(lem_file)
     return files
 
 
-def training_data2(classes: List[str], documents: List[Tuple[List[str], str]], words: List[str]):
+def training_data2(
+    classes: List[str], documents: List[Tuple[List[str], str]], words: List[str]
+):
     lemmatizer = WordNetLemmatizer()
     training = []
     output_empty = [0] * len(classes)
     for doc in documents:
         bag = []
         pattern_words = doc[0]
-        pattern_words = [lemmatizer.lemmatize(word) for word in pattern_words if word not in settings.IGNORE_WORDS]
+        pattern_words = [
+            lemmatizer.lemmatize(word)
+            for word in pattern_words
+            if word not in settings.IGNORE_WORDS
+        ]
         for w in words:
             bag.append(1) if w in pattern_words else bag.append(0)
         output_row = list(output_empty)
@@ -85,8 +96,9 @@ def training_data2(classes: List[str], documents: List[Tuple[List[str], str]], w
     return train_x, train_y
 
 
-def training_data(classes: List[str], documents: List[Tuple[List[str], str]],
-                  words: List[str]) -> Tuple[List[np.ndarray], List[np.ndarray]]:
+def training_data(
+    classes: List[str], documents: List[Tuple[List[str], str]], words: List[str]
+) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     lemmatizer = WordNetLemmatizer()
     training = []
     output = []
@@ -94,7 +106,11 @@ def training_data(classes: List[str], documents: List[Tuple[List[str], str]],
     for doc in documents:
         bag = []
         pattern_words = doc[0]
-        pattern_words = [lemmatizer.lemmatize(word) for word in pattern_words if word not in settings.IGNORE_WORDS]
+        pattern_words = [
+            lemmatizer.lemmatize(word)
+            for word in pattern_words
+            if word not in settings.IGNORE_WORDS
+        ]
         for w in words:
             bag.append(1) if w in pattern_words else bag.append(0)
         output_row = list(output_empty)
@@ -112,29 +128,29 @@ def training_data(classes: List[str], documents: List[Tuple[List[str], str]],
 
 def build_model(train_x: List[np.ndarray], train_y: List[np.ndarray]) -> Sequential:
     model = Sequential()
-    model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu'))
+    model.add(Dense(128, input_shape=(len(train_x[0]),), activation="relu"))
     model.add(Dropout(0.5))
-    model.add(Dense(64, activation='relu'))
+    model.add(Dense(64, activation="relu"))
     model.add(Dropout(0.5))
-    model.add(Dense(len(train_y[0]), activation='softmax'))
+    model.add(Dense(len(train_y[0]), activation="softmax"))
 
     # sgd = SGD(learning_rate=0.01, momentum=0.9, nesterov=True)
     sgd = SGD(learning_rate=0.01, weight_decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
+    model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
     return model
 
 
-if __name__ == '__main__':
-    f = settings.APP_FOLDER / 'intents.json'
+if __name__ == "__main__":
+    f = settings.APP_FOLDER / "intents.json"
     wd = prep_word_data(f)
     ft = "pickle"
     wd_files = save_data(settings.MODEL_FOLDER, wd, file_type=ft)
     for wdf in wd_files:
-        print(f'Saved: {wdf}')
+        print(f"Saved: {wdf}")
 
     tr_x, tr_y = training_data(**wd)
     model = build_model(tr_x, tr_y)
 
     model.fit(np.array(tr_x), np.array(tr_y), epochs=200, batch_size=5, verbose=1)
 
-    model.save(settings.MODEL_FOLDER / 'chatbot_model.keras')
+    model.save(settings.MODEL_FOLDER / "chatbot_model.keras")

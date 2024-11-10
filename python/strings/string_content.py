@@ -2,14 +2,13 @@ import string
 
 
 class StringShifter:
-
     def __init__(self):
-        valid_chars = f'{string.ascii_letters}{string.digits}{string.punctuation}'
+        valid_chars = f"{string.ascii_letters}{string.digits}{string.punctuation}"
         self.characters = [x for x in valid_chars]
 
     def shift_character(self, character: str, shift_value: int) -> str:
         if len(character) != 1 or character is None:
-            raise ValueError('Max length of characters is one.')
+            raise ValueError("Max length of characters is one.")
         try:
             current_index = self.characters.index(character)
             shifted_index = current_index + shift_value
@@ -24,7 +23,7 @@ class StringShifter:
         for ch in string_to_shift:
             shifted_char = self.shift_character(ch, shift_value)
             shifted.append(shifted_char)
-        return ''.join(shifted)
+        return "".join(shifted)
 
     def calculate_shift(self, value: int) -> int:
         # TODO Not working remainder calculations is wr0ng
@@ -35,7 +34,7 @@ class StringShifter:
         return len(self.characters)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     shifter = StringShifter()
     # ch = shifter.shift('v', 2)
     # print(shifter.characters)
@@ -48,16 +47,16 @@ if __name__ == '__main__':
     # print(f'{ch_shift=}')
     # print(f'{ch_unshift=}')
 
-    string_2_shift = '_MyLovelyGirl1923*'
+    string_2_shift = "_MyLovelyGirl1923*"
     shift = 2
     shifted_string = shifter.shift_string(string_2_shift, shift)
 
     shifted_back = shifter.shift_string(shifted_string, -shift)
 
-    print(f'{string_2_shift=}')
-    print(f'{shifted_string=}')
-    print(f'{shifted_back=}')
+    print(f"{string_2_shift=}")
+    print(f"{shifted_string=}")
+    print(f"{shifted_back=}")
 
     shift = 1001
     n = shifter.calculate_shift(shift)
-    print(f'{n=}')
+    print(f"{n=}")

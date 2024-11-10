@@ -5,14 +5,14 @@ def get_python_tags(name: str):
     url = "https://hub.docker.com/v2/repositories/library/python/tags"
     params = {
         "page_size": 100,  # Adjust as necessary
-        "name": name  # Filter for Python 3.10
+        "name": name,  # Filter for Python 3.10
     }
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()  # Raise an error for bad responses
         tags_data = response.json()
 
-        tags = [tag['name'] for tag in tags_data['results'] if name in tag['name']]
+        tags = [tag["name"] for tag in tags_data["results"] if name in tag["name"]]
         return tags
     except requests.RequestException as e:
         print(f"Error fetching Python 3.10 tags: {e}")
@@ -23,14 +23,14 @@ def get_docker_tags(image: str, version: str) -> list[str]:
     url = f"https://hub.docker.com/v2/repositories/library/{image}/tags"
     params = {
         "page_size": 100,  # Adjust as necessary
-        "name": version  # Filter for Python 3.10
+        "name": version,  # Filter for Python 3.10
     }
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()  # Raise an error for bad responses
         tags_data = response.json()
 
-        tags = [tag['name'] for tag in tags_data['results'] if version in tag['name']]
+        tags = [tag["name"] for tag in tags_data["results"] if version in tag["name"]]
         return tags
     except requests.RequestException as e:
         print(f"Error fetching {image} for version {version} tags: {e}")
@@ -47,5 +47,5 @@ def main():
     print("Postgres 15 tags:", postgres_tags)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

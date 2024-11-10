@@ -20,8 +20,10 @@ def dict_to_str_unserializable(data: Dict[str, Any]) -> str:
     return data_str
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # d = str_to_json_dict('Bla')
     # d = dict_to_str({'d': 3, 't': datetime.now()})
-    d = dict_to_str_unserializable({'d': 5, 't': datetime.now(), 'value': Decimal('152.52')})
+    d = dict_to_str_unserializable(
+        {"d": 5, "t": datetime.now(), "value": Decimal("152.52")}
+    )
     print(d)

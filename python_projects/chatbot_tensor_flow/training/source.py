@@ -1,6 +1,6 @@
 import os
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 import random
 import json
@@ -16,28 +16,28 @@ from tensorflow.keras.optimizers import SGD
 
 lemmatizer = WordNetLemmatizer()
 
-intents = json.load(open('../intents.json'))
+intents = json.load(open("../intents.json"))
 
 words = []
 classes = []
 documents = []
-ignore_letters = ['?', '!', '.', ',']
+ignore_letters = ["?", "!", ".", ","]
 
-for intent in intents['intents']:
-    for pattern in intent['patterns']:
+for intent in intents["intents"]:
+    for pattern in intent["patterns"]:
         word_list = nltk.word_tokenize(pattern)
         words.extend(word_list)
-        documents.append((word_list, intent['tag']))
-        if intent['tag'] not in classes:
-            classes.append(intent['tag'])
+        documents.append((word_list, intent["tag"]))
+        if intent["tag"] not in classes:
+            classes.append(intent["tag"])
 
 words = [lemmatizer.lemmatize(word) for word in words if word not in ignore_letters]
 words = sorted(set(words))
 
 classes = sorted(set(classes))
 
-pickle.dump(words, open('../model/words.pkl', 'wb'))
-pickle.dump(classes, open('../model/classes.pkl', 'wb'))
+pickle.dump(words, open("../model/words.pkl", "wb"))
+pickle.dump(classes, open("../model/classes.pkl", "wb"))
 
 training = []
 output_empty = [0] * len(classes)
@@ -67,15 +67,15 @@ train_y = list(output)
 
 
 model = Sequential()
-model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu'))
+model.add(Dense(128, input_shape=(len(train_x[0]),), activation="relu"))
 model.add(Dropout(0.5))
-model.add(Dense(64, activation='relu'))
+model.add(Dense(64, activation="relu"))
 model.add(Dropout(0.5))
-model.add(Dense(len(train_y[0]), activation='softmax'))
+model.add(Dense(len(train_y[0]), activation="softmax"))
 
 sgd = SGD(lr=0.01, weight_decay=1e-6, momentum=0.9, nesterov=True)
-model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
+model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
 
 model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
 
-model.save('model/chatbot_model.keras')
+model.save("model/chatbot_model.keras")
