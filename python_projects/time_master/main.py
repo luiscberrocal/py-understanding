@@ -50,7 +50,10 @@ def parse_time_entries(timew_data, task_data):
     return entries
 
 def convert_to_datetime(date_str):
-    return datetime.strptime(date_str, '%Y%m%dT%H%M%SZ')
+    try:
+        return datetime.strptime(date_str, '%Y%m%dT%H%M%SZ')
+    except ValueError:
+        return datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
 
 # Example usage
 
@@ -60,7 +63,8 @@ def parse_task_entries(*, time_data: list[dict[str, Any]], task_data: list[dict[
         for interval in time_data:
             # print(interval)
             try:
-                if task["project"] in interval.get("tags", []) and interval.get("project") is None:
+                if task["project"] in interval.get("tags", []) and interval.get("duration") is None:
+                    print(f">>>> Processing for project {task['project']} and duration {interval.get('duration')}")
                     start_time = convert_to_datetime(interval["start"])
                     if interval.get("end"):
                         end_time = convert_to_datetime(interval["end"])
@@ -73,7 +77,8 @@ def parse_task_entries(*, time_data: list[dict[str, Any]], task_data: list[dict[
                     interval["description"] = task["description"]
                     interval["uuid"] = task["uuid"]
                     interval["start"] = start_time.strftime('%Y-%m-%d %H:%M:%S')
-                    interval["end"] = end_time.strftime('%Y-%m-%d %H:%M:%S')
+                    if end_time is not None:
+                        interval["end"] = end_time.strftime('%Y-%m-%d %H:%M:%S')
                     interval["duration"] = str(duration)
                     print(interval)
                     print("-" * 120)
