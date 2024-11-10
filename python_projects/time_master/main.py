@@ -49,20 +49,41 @@ def parse_time_entries(timew_data, task_data):
                 })
     return entries
 
+def convert_to_datetime(date_str):
+    return datetime.strptime(date_str, '%Y%m%dT%H%M%SZ')
+
+# Example usage
 
 def parse_task_entries(*, time_data: list[dict[str, Any]], task_data: list[dict[str, Any]]) -> list[dict[str, Any]]:
     time_data_with_tasks = []
     for task in task_data:
         for interval in time_data:
             # print(interval)
-            if task["project"] in interval.get("tags", []):
-                print(task)
-                interval["project"] = task["project"]
-                interval["description"] = task["description"]
-                interval["uuid"] = task["uuid"]
-                print(interval)
-                print("-" * 120)
-                time_data_with_tasks.append(interval)
+            try:
+                if task["project"] in interval.get("tags", []) and interval.get("project") is None:
+                    start_time = convert_to_datetime(interval["start"])
+                    if interval.get("end"):
+                        end_time = convert_to_datetime(interval["end"])
+                        duration = end_time - start_time
+                    else:
+                        end_time = None
+                        duration = None
+
+                    interval["project"] = task["project"]
+                    interval["description"] = task["description"]
+                    interval["uuid"] = task["uuid"]
+                    interval["start"] = start_time.strftime('%Y-%m-%d %H:%M:%S')
+                    interval["end"] = end_time.strftime('%Y-%m-%d %H:%M:%S')
+                    interval["duration"] = str(duration)
+                    print(interval)
+                    print("-" * 120)
+                    if duration is not None:
+                        time_data_with_tasks.append(interval)
+                    else:
+                        print(f">>> Skipping entry without end time: {interval}")
+            except Exception as e:
+                print(f"Error parsing task entries: {e}, {interval} task: {task}")
+                sys.exit(1)
     return time_data_with_tasks
 
 
