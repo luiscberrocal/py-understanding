@@ -78,6 +78,7 @@ def main():
     report_file = f"timew_taskw_report_{timestamp}.csv"
     if entries:
         write_csv(entries, filename=report_file)
+        print(f"Successfully wrote {len(entries)} entries to {report_file}")
     else:
         print("No matching entries found between TimeWarrior and TaskWarrior.")
 
