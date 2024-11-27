@@ -32,13 +32,13 @@ def parse_task_entries(time_data: list[dict[str, Any]], task_data: list[dict[str
     for task in task_data:
         for interval in time_data:
             try:
-                if task["project"] in interval.get("tags", []) and interval.get("duration") is None:
+                if task.get("project") in interval.get("tags", []) and interval.get("duration") is None:
                     start_time = convert_to_datetime(interval["start"])
                     end_time = convert_to_datetime(interval["end"]) if interval.get("end") else None
                     duration = (end_time - start_time) if end_time else None
 
                     interval.update({
-                        "project": task["project"],
+                        "project": task.get("project", ''),
                         "description": task["description"],
                         "uuid": task["uuid"],
                         "start": start_time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -52,7 +52,7 @@ def parse_task_entries(time_data: list[dict[str, Any]], task_data: list[dict[str
                     else:
                         print(f">>> Skipping entry without end time: {interval}")
             except Exception as e:
-                print(f"Error parsing task entries: {e}, {interval} task: {task}")
+                print(f"Error parsing task entries: {e}, {interval} task: {task.get('description')}")
                 sys.exit(1)
     return time_data_with_tasks
 
